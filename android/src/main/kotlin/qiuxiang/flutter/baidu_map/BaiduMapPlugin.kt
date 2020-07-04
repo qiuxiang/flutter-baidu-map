@@ -10,7 +10,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** BaiduMapPlugin */
-public class BaiduMapPlugin: FlutterPlugin, MethodCallHandler {
+class BaiduMapPlugin: FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -18,8 +18,9 @@ public class BaiduMapPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "baidu_map")
+    channel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "baidu_map")
     channel.setMethodCallHandler(this);
+    flutterPluginBinding.platformViewRegistry.registerViewFactory("BaiduMapView", BaiduMapFactory())
   }
 
   // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -36,6 +37,7 @@ public class BaiduMapPlugin: FlutterPlugin, MethodCallHandler {
     fun registerWith(registrar: Registrar) {
       val channel = MethodChannel(registrar.messenger(), "baidu_map")
       channel.setMethodCallHandler(BaiduMapPlugin())
+      registrar.platformViewRegistry().registerViewFactory("BaiduMapView", BaiduMapFactory())
     }
   }
 
