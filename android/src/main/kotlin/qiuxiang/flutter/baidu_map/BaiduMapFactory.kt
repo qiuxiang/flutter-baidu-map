@@ -9,6 +9,6 @@ import io.flutter.plugin.platform.PlatformViewFactory
 class BaiduMapFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         SDKInitializer.initialize(context.applicationContext)
-        return BaiduMapView(context)
+        return BaiduMapView()
     }
 }
