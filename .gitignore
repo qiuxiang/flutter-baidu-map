@@ -3,6 +3,8 @@
 .pub/
 .gradle/
 build/
+android/libs/
+android/src/main/jniLibs/
 
 *.iml
 .packages
