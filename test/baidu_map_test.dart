@@ -17,7 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await BaiduMap.platformVersion, '42');
+  test('init', () async {
+    expect(await BaiduMap.init, null);
   });
 }

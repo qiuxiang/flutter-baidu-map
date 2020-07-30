@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class BaiduMap {
-  static const MethodChannel _channel =
-      const MethodChannel('baidu_map');
+  static const _channel = MethodChannel('BaiduMap');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  static Future<void> init(String token) async {
+    await _channel.invokeMethod('init', token);
   }
 }

@@ -1,59 +1,47 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:baidu_map/baidu_map.dart';
-import 'package:baidu_map/baidu_map_view.dart';
+
+import 'traffic.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatefulWidget {
+class App extends StatelessWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  build(BuildContext context) {
+    return MaterialApp(
+      darkTheme: ThemeData.dark(),
+      home: Home(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+class Home extends StatefulWidget {
+  @override
+  createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await BaiduMap.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    BaiduMap.init('token');
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
+  build(context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Plugin example app')),
+      body: ListView(children: [
+        ListTile(
+          title: Text('trafficEnabled'),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => TrafficEnabled()));
+          },
         ),
-        body: Center(
-          child: BaiduMapView(),
-        ),
-      ),
+      ]),
     );
   }
 }
