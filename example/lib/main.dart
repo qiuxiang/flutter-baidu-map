@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:baidu_map/baidu_map.dart';
+import 'package:flutter/material.dart';
 
-import 'map_type.dart';
+import 'layers.dart';
 import 'map_status.dart';
-import 'traffic.dart';
-import 'indoor.dart';
+import 'map_type.dart';
 
 void main() {
   runApp(App());
@@ -40,8 +39,7 @@ class _HomeState extends State<Home> {
   final _examples = [
     _Example('mapType', (title) => MapTypeExample(title: title)),
     _Example('mapStatus', (title) => MapStatusExample(title: title)),
-    _Example('trafficEnabled', (title) => TrafficEnabled(title: title)),
-    _Example('indoorEnabled', (title) => IndoorEnabled(title: title)),
+    _Example('layers', (title) => Layers(title: title)),
   ];
 
   @override

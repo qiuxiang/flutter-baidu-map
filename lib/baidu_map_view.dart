@@ -9,7 +9,9 @@ const MAP_TYPE_NONE = 3;
 class LatLng {
   double latitude;
   double longitude;
+
   LatLng(this.latitude, this.longitude);
+
   toMap() => {'latitude': latitude, 'longitude': longitude};
 }
 
@@ -37,6 +39,7 @@ class BaiduMapView extends StatefulWidget {
     this.mapStatus,
     this.trafficEnabled,
     this.indoorEnabled,
+    this.buildingsEnabled,
     this.baiduHeatMapEnabled,
   }) : super(key: key);
 
@@ -45,6 +48,7 @@ class BaiduMapView extends StatefulWidget {
   final MapStatus mapStatus;
   final bool trafficEnabled;
   final bool indoorEnabled;
+  final bool buildingsEnabled;
   final bool baiduHeatMapEnabled;
 
   @override
@@ -55,6 +59,7 @@ class BaiduMapView extends StatefulWidget {
         'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
         'trafficEnabled': trafficEnabled,
         'indoorEnabled': indoorEnabled,
+        'buildingsEnabled': buildingsEnabled,
         'baiduHeatMapEnabled': baiduHeatMapEnabled,
       };
 }
@@ -90,6 +95,9 @@ class _BaiduMapViewState extends State<BaiduMapView> {
     if (_.indoorEnabled != widget.indoorEnabled) {
       _controller.setIndoorEnabled(widget.indoorEnabled);
     }
+    if (_.buildingsEnabled != widget.buildingsEnabled) {
+      _controller.setBuildingsEnabled(widget.buildingsEnabled);
+    }
     if (_.baiduHeatMapEnabled != widget.baiduHeatMapEnabled) {
       _controller.setBaiduHeatMapEnabled(widget.baiduHeatMapEnabled);
     }
@@ -122,6 +130,10 @@ class BaiduMapViewController {
 
   Future<void> setIndoorEnabled(bool enabled) async {
     return _channel.invokeMethod('setIndoorEnabled', enabled);
+  }
+
+  Future<void> setBuildingsEnabled(bool enabled) async {
+    return _channel.invokeMethod('setBuildingsEnabled', enabled);
   }
 
   Future<void> setBaiduHeatMapEnabled(bool enabled) async {

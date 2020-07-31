@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:baidu_map/baidu_map_view.dart';
+import 'package:flutter/material.dart';
 
 class MapStatusExample extends StatefulWidget {
   MapStatusExample({Key key, this.title}) : super(key: key);
@@ -34,10 +34,7 @@ class _State extends State<MapStatusExample> {
       appBar: AppBar(title: Text(widget.title)),
       body: Stack(
         children: [
-          BaiduMapView(
-            key: widget.mapViewKey,
-            mapStatus: _status,
-          ),
+          BaiduMapView(key: widget.mapViewKey, mapStatus: _status),
           Positioned(
             top: 20,
             width: MediaQuery.of(context).size.width,
