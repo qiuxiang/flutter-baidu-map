@@ -2,7 +2,7 @@ import 'package:baidu_map/baidu_map_view.dart';
 import 'package:flutter/material.dart';
 
 class MapStatusExample extends StatefulWidget {
-  MapStatusExample({Key key, this.title}) : super(key: key);
+  MapStatusExample(this.title, {Key key}) : super(key: key);
 
   final title;
   final mapViewKey = UniqueKey();

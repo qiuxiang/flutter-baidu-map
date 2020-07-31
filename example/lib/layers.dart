@@ -1,8 +1,8 @@
 import 'package:baidu_map/baidu_map_view.dart';
 import 'package:flutter/material.dart';
 
-class Layers extends StatefulWidget {
-  Layers({Key key, this.title}) : super(key: key);
+class LayersExample extends StatefulWidget {
+  LayersExample(this.title, {Key key}) : super(key: key);
 
   final title;
   final mapViewKey = UniqueKey();
@@ -22,7 +22,7 @@ final indoor = Layer('indoor');
 final buildings = Layer('buildings');
 final baiduHeatMap = Layer('baiduHeatMap');
 
-class _State extends State<Layers> {
+class _State extends State<LayersExample> {
   var _state = {buildings.name: true};
   final _layers = [traffic, indoor, buildings, baiduHeatMap];
 

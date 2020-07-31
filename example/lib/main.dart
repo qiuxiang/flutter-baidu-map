@@ -21,11 +21,11 @@ class App extends StatelessWidget {
 
 class Home extends StatefulWidget {
   @override
-  createState() => _HomeState();
+  createState() => _State();
 }
 
-class _Example {
-  _Example(this.title, this.builder);
+class Example {
+  Example(this.title, this.builder);
 
   final String title;
   final Widget Function(String) builder;
@@ -35,11 +35,11 @@ class _Example {
   }
 }
 
-class _HomeState extends State<Home> {
+class _State extends State {
   final _examples = [
-    _Example('mapType', (title) => MapTypeExample(title: title)),
-    _Example('mapStatus', (title) => MapStatusExample(title: title)),
-    _Example('layers: traffic, indoor, buildings...', (title) => Layers(title: title)),
+    Example('mapType', (title) => MapTypeExample(title)),
+    Example('mapStatus', (title) => MapStatusExample(title)),
+    Example('layers: traffic, indoor, buildings...', (title) => LayersExample(title)),
   ];
 
   @override

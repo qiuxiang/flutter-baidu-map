@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:baidu_map/baidu_map_view.dart';
+import 'package:flutter/material.dart';
 
 class MapTypeExample extends StatefulWidget {
-  MapTypeExample({Key key, this.title}) : super(key: key);
+  MapTypeExample(this.title, {Key key}) : super(key: key);
 
   final title;
   final mapViewKey = UniqueKey();
