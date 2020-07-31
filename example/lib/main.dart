@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
   final _examples = [
     _Example('mapType', (title) => MapTypeExample(title: title)),
     _Example('mapStatus', (title) => MapStatusExample(title: title)),
-    _Example('layers', (title) => Layers(title: title)),
+    _Example('layers: traffic, indoor, buildings...', (title) => Layers(title: title)),
   ];
 
   @override

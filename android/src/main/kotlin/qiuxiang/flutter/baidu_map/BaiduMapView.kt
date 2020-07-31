@@ -2,7 +2,6 @@ package qiuxiang.flutter.baidu_map
 
 import android.app.Activity
 import android.view.View
-import com.baidu.mapapi.map.BaiduMap.MAP_TYPE_NONE
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MapView
@@ -69,27 +68,32 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
     }
   }
 
-  fun setMapStatus(mapStatus: HashMap<*, *>) {
-    val mapStatusBuilder = MapStatus.Builder()
+  private fun setMapStatus(status: HashMap<*, *>, duration: Int = 0) {
+    val builder = MapStatus.Builder()
 
-    if (mapStatus["target"] != null) {
-      val target = mapStatus["target"] as HashMap<*, *>
-      mapStatusBuilder.target(LatLng(target["latitude"] as Double, target["longitude"] as Double))
+    if (status["target"] != null) {
+      builder.target((status["target"] as HashMap<*, *>).toLatLng())
     }
 
-    if (mapStatus["overlook"] != null) {
-      mapStatusBuilder.overlook((mapStatus["overlook"] as Double).toFloat())
+    if (status["overlook"] != null) {
+      builder.overlook((status["overlook"] as Double).toFloat())
     }
 
-    if (mapStatus["rotation"] != null) {
-      mapStatusBuilder.rotate((mapStatus["rotation"] as Double).toFloat())
+    if (status["rotation"] != null) {
+      builder.rotate((status["rotation"] as Double).toFloat())
     }
 
-    if (mapStatus["zoom"] != null) {
-      mapStatusBuilder.zoom((mapStatus["zoom"] as Double).toFloat())
+    if (status["zoom"] != null) {
+      builder.zoom((status["zoom"] as Double).toFloat())
     }
 
-    view.map.setMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatusBuilder.build()))
+    val mapStatus = MapStatusUpdateFactory.newMapStatus(builder.build())
+
+    if (duration > 0) {
+      view.map.animateMapStatus(mapStatus, duration)
+    } else {
+      view.map.setMapStatus(mapStatus)
+    }
   }
 
   override fun getView(): View {
@@ -103,7 +107,10 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     when (call.method) {
       "setMapType" -> view.map.mapType = call.arguments as Int
-      "setMapStatus" -> setMapStatus(call.arguments as HashMap<*, *>)
+      "setMapStatus" -> {
+        val arguments = call.arguments as ArrayList<*>
+        setMapStatus(arguments[0] as HashMap<*, *>, arguments[1] as Int)
+      }
       "setTrafficEnabled" -> view.map.isTrafficEnabled = call.arguments as Boolean
       "setIndoorEnabled" -> view.map.setIndoorEnable(call.arguments as Boolean)
       "setBuildingsEnabled" -> view.map.isBuildingsEnabled = call.arguments as Boolean
@@ -111,4 +118,8 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       else -> result.notImplemented()
     }
   }
+}
+
+private fun HashMap<*, *>.toLatLng(): LatLng {
+  return LatLng(this["latitude"] as Double, this["longitude"] as Double)
 }

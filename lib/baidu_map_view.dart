@@ -13,6 +13,13 @@ class LatLng {
   LatLng(this.latitude, this.longitude);
 
   toMap() => {'latitude': latitude, 'longitude': longitude};
+
+  @override
+  bool operator ==(_) =>
+      _ is LatLng && _.latitude == latitude && _.longitude == longitude;
+
+  @override
+  get hashCode => latitude.hashCode ^ longitude.hashCode;
 }
 
 class MapStatus {
@@ -29,6 +36,18 @@ class MapStatus {
         'rotation': rotation,
         'zoom': zoom,
       };
+
+  @override
+  bool operator ==(_) =>
+      _ is MapStatus &&
+      _.target == target &&
+      _.overlook == overlook &&
+      _.rotation == rotation &&
+      _.zoom == zoom;
+
+  @override
+  get hashCode =>
+      target.hashCode ^ overlook.hashCode ^ rotation.hashCode ^ zoom.hashCode;
 }
 
 class BaiduMapView extends StatefulWidget {
@@ -86,7 +105,7 @@ class _BaiduMapViewState extends State<BaiduMapView> {
     if (_.mapType != widget.mapType) {
       _controller.setMapType(widget.mapType);
     }
-    if (widget.mapStatus != null) {
+    if (_.mapStatus != widget.mapStatus) {
       _controller.setMapStatus(widget.mapStatus);
     }
     if (_.trafficEnabled != widget.trafficEnabled) {
@@ -120,8 +139,8 @@ class BaiduMapViewController {
     return _channel.invokeMethod('setMapType', mapType);
   }
 
-  Future<void> setMapStatus(MapStatus mapStatus) async {
-    return _channel.invokeMethod('setMapStatus', mapStatus.toMap());
+  Future<void> setMapStatus(MapStatus mapStatus, {int duration = 0}) async {
+    return _channel.invokeMethod('setMapStatus', [mapStatus.toMap(), duration]);
   }
 
   Future<void> setTrafficEnabled(bool enabled) async {

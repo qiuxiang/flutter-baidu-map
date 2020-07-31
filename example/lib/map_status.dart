@@ -27,14 +27,34 @@ class _State extends State<MapStatusExample> {
   );
 
   var _status = status1;
+  var _animated = false;
+  BaiduMapViewController _controller;
 
   @override
   build(context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          Row(children: [
+            Text('Animated'),
+            Switch(
+              value: _animated,
+              onChanged: (value) {
+                _animated = value;
+                setState(() {});
+              },
+            ),
+          ]),
+        ],
+      ),
       body: Stack(
         children: [
-          BaiduMapView(key: widget.mapViewKey, mapStatus: _status),
+          BaiduMapView(
+            key: widget.mapViewKey,
+            mapStatus: _status,
+            onCreated: (controller) => _controller = controller,
+          ),
           Positioned(
             top: 20,
             width: MediaQuery.of(context).size.width,
@@ -45,15 +65,23 @@ class _State extends State<MapStatusExample> {
                 RaisedButton(
                   child: Text('Status 1'),
                   onPressed: () {
-                    _status = status1;
-                    setState(() {});
+                    if (_animated) {
+                      _controller.setMapStatus(status1, duration: 4000);
+                    } else {
+                      _status = status1;
+                      setState(() {});
+                    }
                   },
                 ),
                 RaisedButton(
                   child: Text('Status 2'),
                   onPressed: () {
-                    _status = status2;
-                    setState(() {});
+                    if (_animated) {
+                      _controller.setMapStatus(status2, duration: 4000);
+                    } else {
+                      _status = status2;
+                      setState(() {});
+                    }
                   },
                 ),
               ],
