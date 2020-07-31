@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:baidu_map/baidu_map.dart';
 
+import 'map_type.dart';
 import 'traffic.dart';
+import 'indoor.dart';
 
 void main() {
   runApp(App());
@@ -22,7 +24,24 @@ class Home extends StatefulWidget {
   createState() => _HomeState();
 }
 
+class _Example {
+  _Example(this.title, this.builder);
+
+  final String title;
+  final Widget Function(String) builder;
+
+  open(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => builder(title)));
+  }
+}
+
 class _HomeState extends State<Home> {
+  final _examples = [
+    _Example('mapType', (title) => MapTypeExample(title: title)),
+    _Example('trafficEnabled', (title) => TrafficEnabled(title: title)),
+    _Example('indoorEnabled', (title) => IndoorEnabled(title: title)),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -32,16 +51,13 @@ class _HomeState extends State<Home> {
   @override
   build(context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Plugin example app')),
-      body: ListView(children: [
-        ListTile(
-          title: Text('trafficEnabled'),
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => TrafficEnabled()));
-          },
-        ),
-      ]),
-    );
+        appBar: AppBar(title: Text('Plugin examples')),
+        body: ListView(
+          children: _examples
+              .map(((example) => ListTile(
+                  title: Text(example.title),
+                  onTap: () => example.open(context))))
+              .toList(),
+        ));
   }
 }

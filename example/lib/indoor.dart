@@ -3,8 +3,8 @@ import 'package:baidu_map/baidu_map_view.dart';
 
 import 'example.dart';
 
-class TrafficEnabled extends Example {
-  TrafficEnabled({Key key, this.title}) : super(key: key);
+class IndoorEnabled extends Example {
+  IndoorEnabled({Key key, this.title}) : super(key: key);
 
   final title;
 
@@ -14,5 +14,5 @@ class TrafficEnabled extends Example {
 
 class _State extends SwitchExampleState {
   @override
-  buildMapView() => BaiduMapView(trafficEnabled: enabled);
+  buildMapView() => BaiduMapView(indoorEnabled: enabled);
 }
