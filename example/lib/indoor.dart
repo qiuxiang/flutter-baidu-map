@@ -14,5 +14,6 @@ class IndoorEnabled extends Example {
 
 class _State extends SwitchExampleState {
   @override
-  buildMapView() => BaiduMapView(indoorEnabled: enabled);
+  buildMapView() =>
+      BaiduMapView(key: widget.mapViewKey, indoorEnabled: enabled);
 }

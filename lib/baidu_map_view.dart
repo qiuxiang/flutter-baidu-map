@@ -6,11 +6,35 @@ const MAP_TYPE_NORMAL = 1;
 const MAP_TYPE_SATELLITE = 2;
 const MAP_TYPE_NONE = 3;
 
+class LatLng {
+  double latitude;
+  double longitude;
+  LatLng(this.latitude, this.longitude);
+  toMap() => {'latitude': latitude, 'longitude': longitude};
+}
+
+class MapStatus {
+  LatLng target;
+  double overlook;
+  double rotation;
+  double zoom;
+
+  MapStatus({this.target, this.overlook, this.rotation, this.zoom});
+
+  toMap() => {
+        'target': target.toMap(),
+        'overlook': overlook,
+        'rotation': rotation,
+        'zoom': zoom,
+      };
+}
+
 class BaiduMapView extends StatefulWidget {
   BaiduMapView({
     Key key,
     this.onCreated,
     this.mapType,
+    this.mapStatus,
     this.trafficEnabled,
     this.indoorEnabled,
     this.baiduHeatMapEnabled,
@@ -18,12 +42,21 @@ class BaiduMapView extends StatefulWidget {
 
   final void Function(BaiduMapViewController) onCreated;
   final int mapType;
+  final MapStatus mapStatus;
   final bool trafficEnabled;
   final bool indoorEnabled;
   final bool baiduHeatMapEnabled;
 
   @override
   createState() => _BaiduMapViewState();
+
+  toMap() => {
+        'mapType': mapType,
+        'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
+        'trafficEnabled': trafficEnabled,
+        'indoorEnabled': indoorEnabled,
+        'baiduHeatMapEnabled': baiduHeatMapEnabled,
+      };
 }
 
 class _BaiduMapViewState extends State<BaiduMapView> {
@@ -34,13 +67,8 @@ class _BaiduMapViewState extends State<BaiduMapView> {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
         viewType: 'BaiduMapView',
-        creationParams: {
-          'mapType': widget.mapType,
-          'trafficEnabled': widget.trafficEnabled,
-          'indoorEnabled': widget.indoorEnabled,
-          'baiduHeatMapEnabled': widget.baiduHeatMapEnabled,
-        },
-        creationParamsCodec: new StandardMessageCodec(),
+        creationParams: widget.toMap(),
+        creationParamsCodec: StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     }
@@ -52,6 +80,9 @@ class _BaiduMapViewState extends State<BaiduMapView> {
     super.didUpdateWidget(_);
     if (_.mapType != widget.mapType) {
       _controller.setMapType(widget.mapType);
+    }
+    if (widget.mapStatus != null) {
+      _controller.setMapStatus(widget.mapStatus);
     }
     if (_.trafficEnabled != widget.trafficEnabled) {
       _controller.setTrafficEnabled(widget.trafficEnabled);
@@ -79,6 +110,10 @@ class BaiduMapViewController {
 
   Future<void> setMapType(int mapType) async {
     return _channel.invokeMethod('setMapType', mapType);
+  }
+
+  Future<void> setMapStatus(MapStatus mapStatus) async {
+    return _channel.invokeMethod('setMapStatus', mapStatus.toMap());
   }
 
   Future<void> setTrafficEnabled(bool enabled) async {

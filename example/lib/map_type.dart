@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:baidu_map/baidu_map_view.dart';
 
-import 'example.dart';
-
 class MapTypeExample extends StatefulWidget {
   MapTypeExample({Key key, this.title}) : super(key: key);
 
   final title;
+  final mapViewKey = UniqueKey();
 
   @override
   createState() => _State();
 }
 
-class _MapType {
+class MapType {
   final String name;
   final int value;
 
-  _MapType(this.name, this.value);
+  MapType(this.name, this.value);
 
-  static final normal = _MapType('Normal', MAP_TYPE_NORMAL);
-  static final satellite = _MapType('Satellite', MAP_TYPE_SATELLITE);
-  static final none = _MapType('None', MAP_TYPE_NONE);
+  static final normal = MapType('Normal', MAP_TYPE_NORMAL);
+  static final satellite = MapType('Satellite', MAP_TYPE_SATELLITE);
+  static final none = MapType('None', MAP_TYPE_NONE);
 }
 
 class _State extends State<MapTypeExample> {
-  final _mapTypes = [_MapType.normal, _MapType.satellite, _MapType.none];
-  var _mapType = _MapType.normal;
+  final _mapTypes = [MapType.normal, MapType.satellite, MapType.none];
+  var _mapType = MapType.normal;
 
   @override
   build(context) {
@@ -46,7 +45,7 @@ class _State extends State<MapTypeExample> {
           )
         ],
       ),
-      body: BaiduMapView(mapType: _mapType.value),
+      body: BaiduMapView(key: widget.mapViewKey, mapType: _mapType.value),
     );
   }
 }

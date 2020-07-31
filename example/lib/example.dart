@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 abstract class Example extends StatefulWidget {
   Example({Key key, this.title}) : super(key: key);
   final String title;
+  final mapViewKey = UniqueKey();
 }
 
 abstract class SwitchExampleState extends State<Example> {

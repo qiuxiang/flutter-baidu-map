@@ -14,5 +14,6 @@ class TrafficEnabled extends Example {
 
 class _State extends SwitchExampleState {
   @override
-  buildMapView() => BaiduMapView(trafficEnabled: enabled);
+  buildMapView() =>
+      BaiduMapView(key: widget.mapViewKey, trafficEnabled: enabled);
 }
