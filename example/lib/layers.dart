@@ -23,7 +23,7 @@ final buildings = Layer('buildings');
 final baiduHeatMap = Layer('baiduHeatMap');
 
 class _State extends State<LayersExample> {
-  var _state = {buildings.name: true};
+  final _state = {buildings.name: true};
   final _layers = [traffic, indoor, buildings, baiduHeatMap];
 
   @override

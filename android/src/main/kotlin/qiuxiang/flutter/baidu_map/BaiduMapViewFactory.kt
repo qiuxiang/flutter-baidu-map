@@ -1,6 +1,5 @@
 package qiuxiang.flutter.baidu_map
 
-import android.app.Activity
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec.INSTANCE
