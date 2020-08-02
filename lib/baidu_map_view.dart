@@ -2,12 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// 普通模式
 const MAP_TYPE_NORMAL = 1;
+
+/// 卫星图模式
 const MAP_TYPE_SATELLITE = 2;
+
+/// 空白模式
 const MAP_TYPE_NONE = 3;
 
+/// 经纬度坐标
 class LatLng {
+  /// 纬度
   double latitude;
+
+  /// 经度
   double longitude;
 
   LatLng(this.latitude, this.longitude);
@@ -26,10 +35,18 @@ class LatLng {
   get hashCode => latitude.hashCode ^ longitude.hashCode;
 }
 
+/// 地图状态
 class MapStatus {
+  /// 坐标
   LatLng target;
+
+  /// 地图俯仰角度 -45~0
   double overlook;
+
+  /// 地图旋转角度
   double rotation;
+
+  /// 地图缩放级别 4~21，室内图支持到 22
   double zoom;
 
   MapStatus({this.target, this.overlook, this.rotation, this.zoom});
@@ -60,9 +77,15 @@ class MapStatus {
       target.hashCode ^ overlook.hashCode ^ rotation.hashCode ^ zoom.hashCode;
 }
 
+/// 点击地图兴趣点时的描述数据
 class MapPoi {
+  /// 兴趣点的坐标
   LatLng target;
+
+  /// 兴趣点名称
   String name;
+
+  /// 兴趣点的 UID
   String id;
 
   MapPoi({this.target, this.name, this.id});
@@ -73,6 +96,7 @@ class MapPoi {
         id = map['id'];
 }
 
+/// 百度地图组件
 class BaiduMapView extends StatefulWidget {
   BaiduMapView({
     Key key,
@@ -88,15 +112,38 @@ class BaiduMapView extends StatefulWidget {
     this.onStatusChanged,
   }) : super(key: key);
 
+  /// 地图创建完成时调用
+  ///
+  /// 可以使用参数 [BaiduMapViewController] 控制地图
   final void Function(BaiduMapViewController) onCreated;
+
+  /// 地图模式
   final int mapType;
+
+  /// 地图状态，包括中心坐标、旋转角度、俯仰角度、缩放级别
   final MapStatus mapStatus;
+
+  /// 是否显示交通图层
   final bool trafficEnabled;
+
+  /// 是否显示室内地图
   final bool indoorEnabled;
+
+  /// 是否启用 3D 建筑
   final bool buildingsEnabled;
+
+  /// 是否显示百度热力图图层（百度自有数据图层）
+  ///
+  /// 地图层级大于 11 时可显示热力图
   final bool baiduHeatMapEnabled;
+
+  /// 点击地图时调用
   final void Function(LatLng) onTap;
+
+  /// 点击地图兴趣点时调用
   final void Function(MapPoi) onTapPoi;
+
+  /// 地图状态改变时调用
   final void Function(MapStatus) onStatusChanged;
 
   @override
@@ -159,6 +206,7 @@ class _BaiduMapViewState extends State<BaiduMapView> {
   }
 }
 
+/// 地图控制器，提供地图控制接口
 class BaiduMapViewController {
   final MethodChannel _channel;
   final _BaiduMapViewState _state;
@@ -188,26 +236,32 @@ class BaiduMapViewController {
     });
   }
 
+  /// 设置地图类型
   Future<void> setMapType(int mapType) {
     return _channel.invokeMethod('setMapType', mapType);
   }
 
+  /// 设置地图状态，支持动画过度
   Future<void> setMapStatus(MapStatus mapStatus, {int duration = 0}) {
     return _channel.invokeMethod('setMapStatus', [mapStatus.toMap(), duration]);
   }
 
+  /// 设置是否显示交通图层
   Future<void> setTrafficEnabled(bool enabled) {
     return _channel.invokeMethod('setTrafficEnabled', enabled);
   }
 
+  /// 设置是否显示室内地图
   Future<void> setIndoorEnabled(bool enabled) {
     return _channel.invokeMethod('setIndoorEnabled', enabled);
   }
 
+  /// 设置是否显示 3D 建筑
   Future<void> setBuildingsEnabled(bool enabled) {
     return _channel.invokeMethod('setBuildingsEnabled', enabled);
   }
 
+  /// 设置是否显示百度热力图图层
   Future<void> setBaiduHeatMapEnabled(bool enabled) {
     return _channel.invokeMethod('setBaiduHeatMapEnabled', enabled);
   }
