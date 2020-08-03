@@ -13,14 +13,14 @@ class MapStatusExample extends StatefulWidget {
 
 class _State extends State<MapStatusExample> {
   static final status1 = MapStatus(
-    target: LatLng(39.97837, 116.31363),
+    center: LatLng(39.97837, 116.31363),
     zoom: 19,
     rotation: 45,
     overlook: -45,
   );
 
   static final status2 = MapStatus(
-    target: LatLng(39.90864, 116.39745),
+    center: LatLng(39.90864, 116.39745),
     zoom: 10,
     rotation: 0,
     overlook: 0,

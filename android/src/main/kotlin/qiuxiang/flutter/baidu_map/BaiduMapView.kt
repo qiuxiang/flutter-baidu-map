@@ -30,9 +30,8 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       val mapStatus = args["mapStatus"] as HashMap<*, *>
       val mapStatusBuilder = MapStatus.Builder()
 
-      if (mapStatus["target"] != null) {
-        val target = mapStatus["target"] as HashMap<*, *>
-        mapStatusBuilder.target(LatLng(target["latitude"] as Double, target["longitude"] as Double))
+      if (mapStatus["center"] != null) {
+        mapStatusBuilder.target((mapStatus["center"] as HashMap<*, *>).toLatLng())
       }
 
       if (mapStatus["overlook"] != null) {
@@ -86,7 +85,7 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       override fun onMapStatusChange(status: MapStatus) {}
       override fun onMapStatusChangeFinish(status: MapStatus) {
         val map = HashMap<String, Any>()
-        map["target"] = status.target.toMap()
+        map["center"] = status.target.toMap()
         map["overlook"] = status.overlook
         map["rotation"] = status.rotate
         map["zoom"] = status.zoom
@@ -98,8 +97,8 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   private fun setMapStatus(status: HashMap<*, *>, duration: Int = 0) {
     val builder = MapStatus.Builder()
 
-    if (status["target"] != null) {
-      builder.target((status["target"] as HashMap<*, *>).toLatLng())
+    if (status["center"] != null) {
+      builder.target((status["center"] as HashMap<*, *>).toLatLng())
     }
 
     if (status["overlook"] != null) {
@@ -175,7 +174,7 @@ fun LatLng.toMap(): HashMap<*, *> {
 
 private fun MapPoi.toMap(): HashMap<*, *> {
   val map = HashMap<String, Any>()
-  map["target"] = this.position.toMap()
+  map["position"] = this.position.toMap()
   map["name"] = this.name
   map["id"] = this.uid
   return map

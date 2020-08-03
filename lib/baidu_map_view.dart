@@ -38,7 +38,7 @@ class LatLng {
 /// 地图状态
 class MapStatus {
   /// 坐标
-  LatLng target;
+  LatLng center;
 
   /// 地图俯仰角度 -45~0
   double overlook;
@@ -49,16 +49,16 @@ class MapStatus {
   /// 地图缩放级别 4~21，室内图支持到 22
   double zoom;
 
-  MapStatus({this.target, this.overlook, this.rotation, this.zoom});
+  MapStatus({this.center, this.overlook, this.rotation, this.zoom});
 
   MapStatus.fromMap(map)
-      : target = LatLng.fromMap(map['target']),
+      : center = LatLng.fromMap(map['center']),
         overlook = map['overlook'],
         rotation = map['rotation'],
         zoom = map['zoom'];
 
   toMap() => {
-        'target': target.toMap(),
+        'center': center.toMap(),
         'overlook': overlook,
         'rotation': rotation,
         'zoom': zoom,
@@ -67,20 +67,20 @@ class MapStatus {
   @override
   bool operator ==(_) =>
       _ is MapStatus &&
-      _.target == target &&
+      _.center == center &&
       _.overlook == overlook &&
       _.rotation == rotation &&
       _.zoom == zoom;
 
   @override
   get hashCode =>
-      target.hashCode ^ overlook.hashCode ^ rotation.hashCode ^ zoom.hashCode;
+      center.hashCode ^ overlook.hashCode ^ rotation.hashCode ^ zoom.hashCode;
 }
 
 /// 点击地图兴趣点时的描述数据
 class MapPoi {
   /// 兴趣点的坐标
-  LatLng target;
+  LatLng position;
 
   /// 兴趣点名称
   String name;
@@ -88,10 +88,10 @@ class MapPoi {
   /// 兴趣点的 UID
   String id;
 
-  MapPoi({this.target, this.name, this.id});
+  MapPoi({this.position, this.name, this.id});
 
   MapPoi.fromMap(map)
-      : target = LatLng.fromMap(map['target']),
+      : position = LatLng.fromMap(map['position']),
         name = map['name'],
         id = map['id'];
 }
@@ -265,4 +265,12 @@ class BaiduMapViewController {
   Future<void> setBaiduHeatMapEnabled(bool enabled) {
     return _channel.invokeMethod('setBaiduHeatMapEnabled', enabled);
   }
+}
+
+/// 地图标记覆盖物
+class Marker {
+  Marker({this.position});
+
+  /// 标记坐标
+  final LatLng position;
 }

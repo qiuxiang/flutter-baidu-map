@@ -54,7 +54,7 @@ class _State extends State<LayersExample> {
             child: BaiduMapView(
               key: widget.mapViewKey,
               mapStatus: MapStatus(
-                  target: LatLng(39.9169, 116.3793), zoom: 19, overlook: -45),
+                  center: LatLng(39.9169, 116.3793), zoom: 19, overlook: -45),
               trafficEnabled: _state[traffic.name],
               indoorEnabled: _state[indoor.name],
               buildingsEnabled: _state[buildings.name],

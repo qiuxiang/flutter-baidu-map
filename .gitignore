@@ -2,6 +2,7 @@
 .dart_tool/
 .pub/
 .gradle/
+doc/
 build/
 android/libs/
 android/src/main/jniLibs/

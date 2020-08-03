@@ -22,7 +22,7 @@ class _State extends State<EventsExample> {
           print(latLng.toMap());
         },
         onTapPoi: (poi) {
-          print({'target': poi.target.toMap(), 'name': poi.name, 'id': poi.id});
+          print({'position': poi.position.toMap(), 'name': poi.name, 'id': poi.id});
         },
         onStatusChanged: (status) {
           print(status.toMap());
