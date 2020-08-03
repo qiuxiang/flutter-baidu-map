@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -109,6 +111,7 @@ class BaiduMapView extends StatefulWidget {
     this.baiduHeatMapEnabled,
     this.onTap,
     this.onTapPoi,
+    this.onTapMarker,
     this.onStatusChanged,
   }) : super(key: key);
 
@@ -142,6 +145,8 @@ class BaiduMapView extends StatefulWidget {
 
   /// 点击地图兴趣点时调用
   final void Function(MapPoi) onTapPoi;
+
+  final void Function(Marker) onTapMarker;
 
   /// 地图状态改变时调用
   final void Function(MapStatus) onStatusChanged;
@@ -210,6 +215,7 @@ class _BaiduMapViewState extends State<BaiduMapView> {
 class BaiduMapViewController {
   final MethodChannel _channel;
   final _BaiduMapViewState _state;
+  final _markers = Map<String, Marker>();
 
   BaiduMapViewController(int id, this._state)
       : _channel = MethodChannel('BaiduMapView_$id') {
@@ -224,6 +230,11 @@ class BaiduMapViewController {
         case 'onTapPoi':
           if (widget.onTapPoi != null) {
             widget.onTapPoi(MapPoi.fromMap(call.arguments));
+          }
+          break;
+        case 'onTapMarker':
+          if (widget.onTapMarker != null) {
+            widget.onTapMarker(_markers[call.arguments]);
           }
           break;
         case 'onStatusChanged':
@@ -265,12 +276,50 @@ class BaiduMapViewController {
   Future<void> setBaiduHeatMapEnabled(bool enabled) {
     return _channel.invokeMethod('setBaiduHeatMapEnabled', enabled);
   }
+
+  Future<Marker> addMarker(MarkerOptions options) async {
+    final completer = Completer<Marker>();
+    Marker(_channel, options, (marker) {
+      _markers[marker.id] = marker;
+      completer.complete(marker);
+    });
+    return completer.future;
+  }
+}
+
+/// 地图标记覆盖物
+class MarkerOptions {
+  MarkerOptions({this.position, this.icon});
+
+  /// 标记坐标
+  final LatLng position;
+
+  final String icon;
+
+  toMap() => {
+        'position': position.toMap(),
+        'icon': icon,
+      };
 }
 
 /// 地图标记覆盖物
 class Marker {
-  Marker({this.position});
+  Marker(channel, MarkerOptions options, void Function(Marker) callback)
+      : _channel = channel,
+        _options = options {
+    _channel.invokeMethod<String>('addMarker', _options.toMap()).then((id) {
+      _id = id;
+      callback(this);
+    });
+  }
 
-  /// 标记坐标
-  final LatLng position;
+  String _id;
+  final MethodChannel _channel;
+  final MarkerOptions _options;
+
+  get id => _id;
+
+  remove() {
+    return _channel.invokeMethod('removeMarker', id);
+  }
 }

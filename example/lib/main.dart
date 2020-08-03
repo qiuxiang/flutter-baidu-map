@@ -5,6 +5,7 @@ import 'events.dart';
 import 'layers.dart';
 import 'map_status.dart';
 import 'map_type.dart';
+import 'marker.dart';
 
 void main() {
   runApp(App());
@@ -43,6 +44,7 @@ class _State extends State {
     Example('layers: traffic, indoor, buildings...',
         (title) => LayersExample(title)),
     Example('events', (title) => EventsExample(title)),
+    Example('marker', (title) => MarkerExample(title)),
   ];
 
   @override

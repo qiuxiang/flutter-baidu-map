@@ -8,12 +8,15 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
+import io.flutter.view.FlutterMain
+
 
 class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   : PlatformView, MethodChannel.MethodCallHandler {
   private val mapView = MapView(activity)
   private val map = mapView.map
   private val channel = MethodChannel(messenger, "BaiduMapView_$id")
+  private val markers = HashMap<String, Marker>()
 
   companion object {
     lateinit var activity: Activity
@@ -92,6 +95,11 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
         channel.invokeMethod("onStatusChanged", map)
       }
     })
+
+    map.setOnMarkerClickListener { marker ->
+      channel.invokeMethod("onTapMarker", marker.id)
+      true
+    }
   }
 
   private fun setMapStatus(status: HashMap<*, *>, duration: Int = 0) {
@@ -154,6 +162,24 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       }
       "setBaiduHeatMapEnabled" -> {
         map.isBaiduHeatMapEnabled = call.arguments as Boolean
+        result.success(null)
+      }
+      "addMarker" -> {
+        val data = call.arguments as HashMap<*, *>
+        val options = MarkerOptions()
+        options.position((data["position"] as HashMap<*, *>).toLatLng())
+        var icon: BitmapDescriptor? = null
+        if (data["icon"] != null) {
+          icon = BitmapDescriptorFactory.fromAsset(
+            FlutterMain.getLookupKeyForAsset(data["icon"] as String))
+        }
+        options.icon(icon)
+        val marker = map.addOverlay(options) as Marker
+        markers[marker.id] = marker
+        result.success(marker.id)
+      }
+      "removeMarker" -> {
+        markers[call.arguments]?.remove()
         result.success(null)
       }
       else -> result.notImplemented()
