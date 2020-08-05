@@ -8,15 +8,13 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
-import io.flutter.view.FlutterMain
 
-
-class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
+class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   : PlatformView, MethodChannel.MethodCallHandler {
   private val mapView = MapView(activity)
-  private val map = mapView.map
+  val map: BaiduMap = mapView.map
   private val channel = MethodChannel(messenger, "BaiduMapView_$id")
-  private val markers = HashMap<String, Marker>()
+  private val markers = HashMap<String, BaiduMapMarker>()
 
   companion object {
     lateinit var activity: Activity
@@ -165,16 +163,7 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
         result.success(null)
       }
       "addMarker" -> {
-        val data = call.arguments as HashMap<*, *>
-        val options = MarkerOptions()
-        options.position((data["position"] as HashMap<*, *>).toLatLng())
-        var icon: BitmapDescriptor? = null
-        if (data["icon"] != null) {
-          icon = BitmapDescriptorFactory.fromAsset(
-            FlutterMain.getLookupKeyForAsset(data["icon"] as String))
-        }
-        options.icon(icon)
-        val marker = map.addOverlay(options) as Marker
+        val marker = BaiduMapMarker(this, call.arguments as HashMap<*, *>)
         markers[marker.id] = marker
         result.success(marker.id)
       }
@@ -185,23 +174,4 @@ class BaiduMapView(messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       else -> result.notImplemented()
     }
   }
-}
-
-private fun HashMap<*, *>.toLatLng(): LatLng {
-  return LatLng(this["latitude"] as Double, this["longitude"] as Double)
-}
-
-fun LatLng.toMap(): HashMap<*, *> {
-  val map = HashMap<String, Any>()
-  map["latitude"] = this.latitude
-  map["longitude"] = this.longitude
-  return map
-}
-
-private fun MapPoi.toMap(): HashMap<*, *> {
-  val map = HashMap<String, Any>()
-  map["position"] = this.position.toMap()
-  map["name"] = this.name
-  map["id"] = this.uid
-  return map
 }

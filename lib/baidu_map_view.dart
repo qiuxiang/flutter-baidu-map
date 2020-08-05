@@ -278,48 +278,46 @@ class BaiduMapViewController {
   }
 
   Future<Marker> addMarker(MarkerOptions options) async {
-    final completer = Completer<Marker>();
-    Marker(_channel, options, (marker) {
-      _markers[marker.id] = marker;
-      completer.complete(marker);
-    });
-    return completer.future;
+    final id = await _channel.invokeMethod('addMarker', options.toMap());
+    final marker = Marker(this, id);
+    _markers[id] = marker;
+    return marker;
   }
 }
 
 /// 地图标记覆盖物
 class MarkerOptions {
-  MarkerOptions({this.position, this.icon});
+  MarkerOptions({this.position, this.asset});
 
   /// 标记坐标
   final LatLng position;
 
-  final String icon;
+  final String asset;
 
   toMap() => {
         'position': position.toMap(),
-        'icon': icon,
+        'asset': asset,
       };
 }
 
 /// 地图标记覆盖物
 class Marker {
-  Marker(channel, MarkerOptions options, void Function(Marker) callback)
-      : _channel = channel,
-        _options = options {
-    _channel.invokeMethod<String>('addMarker', _options.toMap()).then((id) {
-      _id = id;
-      callback(this);
-    });
-  }
+  Marker(this._controller, this._id)
+      : _channel = MethodChannel('BaiduMapMarker_$_id');
+
+  final BaiduMapViewController _controller;
+  final MethodChannel _channel;
 
   String _id;
-  final MethodChannel _channel;
-  final MarkerOptions _options;
 
   get id => _id;
 
-  remove() {
-    return _channel.invokeMethod('removeMarker', id);
+  Future<void> remove() {
+    _controller._markers.remove(id);
+    return _channel.invokeMethod('remove');
+  }
+
+  Future<void> update(MarkerOptions options) {
+    return _channel.invokeMethod('update', options.toMap());
   }
 }

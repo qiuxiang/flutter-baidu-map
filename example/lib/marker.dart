@@ -24,10 +24,7 @@ class _State extends State<MarkerExample> {
           _controller = controller;
         },
         onTap: (position) {
-          _controller.addMarker(MarkerOptions(
-            position: position,
-            icon: "images/marker.png",
-          ));
+          _controller.addMarker(MarkerOptions(position: position));
         },
         onTapMarker: (marker) {
           marker.remove();
