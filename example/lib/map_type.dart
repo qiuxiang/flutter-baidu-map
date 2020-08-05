@@ -1,4 +1,4 @@
-import 'package:baidu_map/baidu_map_view.dart';
+import 'package:baidu_map/baidu_map.dart';
 import 'package:flutter/material.dart';
 
 class MapTypeExample extends StatefulWidget {
@@ -45,7 +45,7 @@ class _State extends State<MapTypeExample> {
           )
         ],
       ),
-      body: BaiduMapView(key: widget.mapViewKey, mapType: _mapType.value),
+      body: BaiduMap(key: widget.mapViewKey, mapType: _mapType.value),
     );
   }
 }

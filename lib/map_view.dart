@@ -1,3 +1,5 @@
+library baidu_map;
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -60,19 +62,19 @@ class MapStatus {
         zoom = map['zoom'];
 
   toMap() => {
-        'center': center.toMap(),
-        'overlook': overlook,
-        'rotation': rotation,
-        'zoom': zoom,
-      };
+    'center': center.toMap(),
+    'overlook': overlook,
+    'rotation': rotation,
+    'zoom': zoom,
+  };
 
   @override
   bool operator ==(_) =>
       _ is MapStatus &&
-      _.center == center &&
-      _.overlook == overlook &&
-      _.rotation == rotation &&
-      _.zoom == zoom;
+          _.center == center &&
+          _.overlook == overlook &&
+          _.rotation == rotation &&
+          _.zoom == zoom;
 
   @override
   get hashCode =>
@@ -99,8 +101,8 @@ class MapPoi {
 }
 
 /// 百度地图组件
-class BaiduMapView extends StatefulWidget {
-  BaiduMapView({
+class BaiduMap extends StatefulWidget {
+  BaiduMap({
     Key key,
     this.onCreated,
     this.mapType,
@@ -152,19 +154,19 @@ class BaiduMapView extends StatefulWidget {
   final void Function(MapStatus) onStatusChanged;
 
   @override
-  createState() => _BaiduMapViewState();
+  createState() => _BaiduMapState();
 
   toMap() => {
-        'mapType': mapType,
-        'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
-        'trafficEnabled': trafficEnabled,
-        'indoorEnabled': indoorEnabled,
-        'buildingsEnabled': buildingsEnabled,
-        'baiduHeatMapEnabled': baiduHeatMapEnabled,
-      };
+    'mapType': mapType,
+    'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
+    'trafficEnabled': trafficEnabled,
+    'indoorEnabled': indoorEnabled,
+    'buildingsEnabled': buildingsEnabled,
+    'baiduHeatMapEnabled': baiduHeatMapEnabled,
+  };
 }
 
-class _BaiduMapViewState extends State<BaiduMapView> {
+class _BaiduMapState extends State<BaiduMap> {
   BaiduMapViewController _controller;
 
   @override
@@ -214,7 +216,7 @@ class _BaiduMapViewState extends State<BaiduMapView> {
 /// 地图控制器，提供地图控制接口
 class BaiduMapViewController {
   final MethodChannel _channel;
-  final _BaiduMapViewState _state;
+  final _BaiduMapState _state;
   final _markers = Map<String, Marker>();
 
   BaiduMapViewController(int id, this._state)
@@ -295,9 +297,9 @@ class MarkerOptions {
   final String asset;
 
   toMap() => {
-        'position': position.toMap(),
-        'asset': asset,
-      };
+    'position': position.toMap(),
+    'asset': asset,
+  };
 }
 
 /// 地图标记覆盖物

@@ -50,7 +50,7 @@ class _State extends State {
   @override
   void initState() {
     super.initState();
-    BaiduMap.init();
+    BaiduMapSDK.init();
   }
 
   @override

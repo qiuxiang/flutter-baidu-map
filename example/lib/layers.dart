@@ -1,4 +1,4 @@
-import 'package:baidu_map/baidu_map_view.dart';
+import 'package:baidu_map/baidu_map.dart';
 import 'package:flutter/material.dart';
 
 class LayersExample extends StatefulWidget {
@@ -51,7 +51,7 @@ class _State extends State<LayersExample> {
         direction: Axis.vertical,
         children: [
           Expanded(
-            child: BaiduMapView(
+            child: BaiduMap(
               key: widget.mapViewKey,
               mapStatus: MapStatus(
                   center: LatLng(39.9169, 116.3793), zoom: 19, overlook: -45),

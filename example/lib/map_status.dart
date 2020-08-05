@@ -1,4 +1,4 @@
-import 'package:baidu_map/baidu_map_view.dart';
+import 'package:baidu_map/baidu_map.dart';
 import 'package:flutter/material.dart';
 
 class MapStatusExample extends StatefulWidget {
@@ -50,7 +50,7 @@ class _State extends State<MapStatusExample> {
       ),
       body: Stack(
         children: [
-          BaiduMapView(
+          BaiduMap(
             key: widget.mapViewKey,
             mapStatus: _status,
             onCreated: (controller) => _controller = controller,
