@@ -5,15 +5,12 @@
 Pod::Spec.new do |s|
   s.name             = 'baidu_map'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
-  s.description      = <<-DESC
-A new flutter plugin project.
-                       DESC
-  s.homepage         = 'http://example.com'
+  s.summary          = 'Baidu Map for flutter'
+  s.homepage         = 'https://github.com/qiuxiang/flutter-baidu-map'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { '7c00' => 'i@7c00.cc' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = '**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '8.0'
 
