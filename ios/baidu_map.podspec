@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files = '**/*'
   s.dependency 'Flutter'
+  s.dependency 'BaiduMapKit', "~> 5.4.0"
   s.platform = :ios, '8.0'
 
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.

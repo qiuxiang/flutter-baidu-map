@@ -50,7 +50,7 @@ class _State extends State {
   @override
   void initState() {
     super.initState();
-    BaiduMapSDK.init();
+    BaiduMapSDK.init(iosApiKey: '3rfXjBG7eCzn2B0Eh8bTFjfaFnDGM2CZ');
   }
 
   @override
