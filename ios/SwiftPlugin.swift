@@ -1,11 +1,8 @@
 public class SwiftPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "BaiduMap", binaryMessenger: registrar.messenger())
-        let instance = SwiftPlugin()
-        registrar.addMethodCallDelegate(instance, channel: channel)
-        
-        let baiduMapFactory = BaiduMapFactory(registrar: registrar)
-        registrar.register(baiduMapFactory, withId: "BaiduMapView")
+        registrar.addMethodCallDelegate(SwiftPlugin(), channel: channel)
+        registrar.register(BaiduMapFactory(registrar: registrar), withId: "BaiduMapView")
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -13,7 +10,7 @@ public class SwiftPlugin: NSObject, FlutterPlugin {
         case "init":
             let manager = BMKMapManager()
             if (manager.start(call.arguments as? String, generalDelegate: nil)) {
-               result(nil)
+                result(nil)
             } else {
                 result(FlutterError(code: "授权失败", message: nil, details: nil))
             }
