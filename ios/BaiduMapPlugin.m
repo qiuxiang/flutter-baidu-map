@@ -10,6 +10,6 @@
 
 @implementation BaiduMapPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftBaiduMapPlugin registerWithRegistrar:registrar];
+  [SwiftPlugin registerWithRegistrar:registrar];
 }
 @end

@@ -62,19 +62,19 @@ class MapStatus {
         zoom = map['zoom'];
 
   toMap() => {
-    'center': center.toMap(),
-    'overlook': overlook,
-    'rotation': rotation,
-    'zoom': zoom,
-  };
+        'center': center.toMap(),
+        'overlook': overlook,
+        'rotation': rotation,
+        'zoom': zoom,
+      };
 
   @override
   bool operator ==(_) =>
       _ is MapStatus &&
-          _.center == center &&
-          _.overlook == overlook &&
-          _.rotation == rotation &&
-          _.zoom == zoom;
+      _.center == center &&
+      _.overlook == overlook &&
+      _.rotation == rotation &&
+      _.zoom == zoom;
 
   @override
   get hashCode =>
@@ -157,13 +157,13 @@ class BaiduMap extends StatefulWidget {
   createState() => _BaiduMapState();
 
   toMap() => {
-    'mapType': mapType,
-    'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
-    'trafficEnabled': trafficEnabled,
-    'indoorEnabled': indoorEnabled,
-    'buildingsEnabled': buildingsEnabled,
-    'baiduHeatMapEnabled': baiduHeatMapEnabled,
-  };
+        'mapType': mapType,
+        'mapStatus': mapStatus == null ? null : mapStatus.toMap(),
+        'trafficEnabled': trafficEnabled,
+        'indoorEnabled': indoorEnabled,
+        'buildingsEnabled': buildingsEnabled,
+        'baiduHeatMapEnabled': baiduHeatMapEnabled,
+      };
 }
 
 class _BaiduMapState extends State<BaiduMap> {
@@ -171,15 +171,24 @@ class _BaiduMapState extends State<BaiduMap> {
 
   @override
   build(context) {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return AndroidView(
-        viewType: 'BaiduMapView',
-        creationParams: widget.toMap(),
-        creationParamsCodec: StandardMessageCodec(),
-        onPlatformViewCreated: _onPlatformViewCreated,
-      );
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return AndroidView(
+          viewType: 'BaiduMapView',
+          creationParams: widget.toMap(),
+          creationParamsCodec: StandardMessageCodec(),
+          onPlatformViewCreated: _onPlatformViewCreated,
+        );
+      case TargetPlatform.iOS:
+        return UiKitView(
+          viewType: 'BaiduMapView',
+          creationParams: widget.toMap(),
+          creationParamsCodec: StandardMessageCodec(),
+          onPlatformViewCreated: _onPlatformViewCreated,
+        );
+      default:
+        return Text('$defaultTargetPlatform is not yet supported');
     }
-    return Text('$defaultTargetPlatform is not yet supported');
   }
 
   @override
@@ -297,9 +306,9 @@ class MarkerOptions {
   final String asset;
 
   toMap() => {
-    'position': position.toMap(),
-    'asset': asset,
-  };
+        'position': position.toMap(),
+        'asset': asset,
+      };
 }
 
 /// 地图标记覆盖物
