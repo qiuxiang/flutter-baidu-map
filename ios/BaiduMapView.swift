@@ -34,6 +34,10 @@ class BaiduMapView: NSObject, FlutterPlatformView {
         let args = args as? Dictionary<String, Any>
         setMapType(args?["mapType"])
         setMapStatus(args?["mapStatus"])
+        setTrafficEnabled(args?["trafficEnabled"])
+        setIndoorEnabled(args?["indoorEnabled"])
+        setBuildingsEnabled(args?["buildingsEnabled"])
+        setBaiduHeatMapEnabled(args?["baiduHeatMapEnabled"])
     }
     
     func setMapType(_ type: Any?) {
@@ -49,7 +53,7 @@ class BaiduMapView: NSObject, FlutterPlatformView {
         let duration = duration as? Int32 ?? 0
         let status = status as? Dictionary<String, Any>
         let mapStatus = BMKMapStatus()
-        if let it = toLocation(status?["center"]) { mapStatus.targetGeoPt = it }
+        if let it = toCoordinate(status?["center"]) { mapStatus.targetGeoPt = it }
         if let it = status?["zoom"] as? Float { mapStatus.fLevel = it }
         if let it = status?["overlook"] as? Float { mapStatus.fOverlooking = it }
         if let it = status?["rotation"] as? Float { mapStatus.fRotation = it }
@@ -60,6 +64,22 @@ class BaiduMapView: NSObject, FlutterPlatformView {
         }
     }
     
+    func setTrafficEnabled(_ enabled: Any?) {
+        if let it = enabled as? Bool { mapView.isTrafficEnabled = it }
+    }
+    
+    func setIndoorEnabled(_ enabled: Any?) {
+        if let it = enabled as? Bool { mapView.baseIndoorMapEnabled = it }
+    }
+    
+    func setBuildingsEnabled(_ enabled: Any?) {
+        if let it = enabled as? Bool { mapView.isBuildingsEnabled = it }
+    }
+    
+    func setBaiduHeatMapEnabled(_ enabled: Any?) {
+        if let it = enabled as? Bool { mapView.isBaiduHeatMapEnabled = it }
+    }
+    
     func handle(call: FlutterMethodCall, result: FlutterResult) {
         switch call.method {
         case "setMapType":
@@ -68,6 +88,18 @@ class BaiduMapView: NSObject, FlutterPlatformView {
         case "setMapStatus":
             let args = call.arguments as? Array<Any>
             setMapStatus(args?[0], duration: args?[1])
+            result(nil)
+        case "setTrafficEnabled":
+            setTrafficEnabled(call.arguments)
+            result(nil)
+        case "setIndoorEnabled":
+            setIndoorEnabled(call.arguments)
+            result(nil)
+        case "setBuildingsEnabled":
+            setBuildingsEnabled(call.arguments)
+            result(nil)
+        case "setBaiduHeatMapEnabled":
+            setBaiduHeatMapEnabled(call.arguments)
             result(nil)
         default:
             result(FlutterMethodNotImplemented)
