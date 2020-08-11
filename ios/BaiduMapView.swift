@@ -17,12 +17,12 @@ class BaiduMapFactory: NSObject, FlutterPlatformViewFactory {
     }
 }
 
-class BaiduMapView: NSObject, FlutterPlatformView {
+class BaiduMapView: NSObject, FlutterPlatformView, BMKMapViewDelegate {
     let mapView: BMKMapView
     let channel: FlutterMethodChannel
     
     init(_ frame: CGRect, viewId: Int64, messenger: FlutterBinaryMessenger) {
-        self.mapView = BMKMapView(frame: frame)
+        mapView = BMKMapView(frame: frame)
         channel = FlutterMethodChannel(name: "BaiduMapView_" + String(viewId), binaryMessenger: messenger)
     }
     
@@ -31,6 +31,7 @@ class BaiduMapView: NSObject, FlutterPlatformView {
     }
     
     func initMapView(_ args: Any?) {
+        mapView.delegate = self
         let args = args as? Dictionary<String, Any>
         setMapType(args?["mapType"])
         setMapStatus(args?["mapStatus"])
@@ -108,5 +109,22 @@ class BaiduMapView: NSObject, FlutterPlatformView {
     
     func view() -> UIView {
         return mapView
+    }
+    
+    func mapView(_ mapView: BMKMapView, onClickedMapBlank coordinate: CLLocationCoordinate2D) {
+        channel.invokeMethod("onTap", arguments: toJson(coordinate))
+    }
+    
+    func mapView(_ mapView: BMKMapView, onClickedMapPoi mapPoi: BMKMapPoi) {
+        channel.invokeMethod("onTapPoi", arguments: toJson(mapPoi))
+    }
+    
+    func mapView(_ mapView: BMKMapView, regionDidChangeAnimated animated: Bool, reason: BMKRegionChangeReason) {
+        channel.invokeMethod("onStatusChanged", arguments: [
+            "center": toJson(mapView.centerCoordinate),
+            "zoom": mapView.zoomLevel,
+            "overlook": Double(mapView.overlooking),
+            "rotation": Double(mapView.rotation),
+        ])
     }
 }
