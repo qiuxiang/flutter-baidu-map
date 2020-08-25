@@ -1,10 +1,4 @@
-library baidu_map;
-
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of baidu_map;
 
 /// 普通模式
 const MAP_TYPE_NORMAL = 1;

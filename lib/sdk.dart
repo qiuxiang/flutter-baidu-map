@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/services.dart';
+part of baidu_map;
 
 class BaiduMapSDK {
   static const _channel = MethodChannel('BaiduMap');
