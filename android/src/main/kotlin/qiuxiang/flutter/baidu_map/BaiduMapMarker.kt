@@ -34,12 +34,8 @@ class BaiduMapMarker(map: BaiduMapView, args: HashMap<*, *>) : MethodCallHandler
   }
 
   private fun getIcon(args: HashMap<*, *>): BitmapDescriptor? {
-    return if (args["asset"] != null) {
-      BitmapDescriptorFactory.fromAsset(
-        FlutterMain.getLookupKeyForAsset(args["asset"] as String))
-    } else {
-      null
-    }
+    return BitmapDescriptorFactory.fromAsset(
+      (args["asset"] as? String)?.let { FlutterMain.getLookupKeyForAsset(it) })
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -50,13 +46,8 @@ class BaiduMapMarker(map: BaiduMapView, args: HashMap<*, *>) : MethodCallHandler
       }
       "update" -> {
         val args = call.arguments as HashMap<*, *>
-        if (args["position"] != null) {
-          marker.position = (args["position"] as HashMap<*, *>).toLatLng()
-        }
-        val icon = getIcon(args)
-        if (icon != null) {
-          marker.icon = icon
-        }
+        marker.position = (args["position"] as HashMap<*, *>).toLatLng()
+        marker.icon = getIcon(args)
         result.success(null)
       }
       else -> result.notImplemented()

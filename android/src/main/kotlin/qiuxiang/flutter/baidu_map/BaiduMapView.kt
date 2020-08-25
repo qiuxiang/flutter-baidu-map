@@ -23,48 +23,13 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   init {
     channel.setMethodCallHandler(this)
 
-    if (args["mapType"] != null) {
-      map.mapType = args["mapType"] as Int
-    }
+    (args["mapType"] as? Int)?.let { map.mapType = it }
+    (args["trafficEnabled"] as? Boolean)?.let { map.isTrafficEnabled = it }
+    (args["indoorEnabled"] as? Boolean)?.let { map.setIndoorEnable(it) }
+    (args["buildingsEnabled"] as? Boolean)?.let { map.isBuildingsEnabled = it }
+    (args["baiduHeatMapEnabled"] as? Boolean)?.let { map.isBaiduHeatMapEnabled = it }
 
-    if (args["mapStatus"] != null) {
-      val mapStatus = args["mapStatus"] as HashMap<*, *>
-      val mapStatusBuilder = MapStatus.Builder()
-
-      if (mapStatus["center"] != null) {
-        mapStatusBuilder.target((mapStatus["center"] as HashMap<*, *>).toLatLng())
-      }
-
-      if (mapStatus["overlook"] != null) {
-        mapStatusBuilder.overlook((mapStatus["overlook"] as Double).toFloat())
-      }
-
-      if (mapStatus["rotation"] != null) {
-        mapStatusBuilder.rotate((mapStatus["rotation"] as Double).toFloat())
-      }
-
-      if (mapStatus["zoom"] != null) {
-        mapStatusBuilder.zoom((mapStatus["zoom"] as Double).toFloat())
-      }
-
-      map.setMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatusBuilder.build()))
-    }
-
-    if (args["trafficEnabled"] != null) {
-      map.isTrafficEnabled = args["trafficEnabled"] as Boolean
-    }
-
-    if (args["indoorEnabled"] != null) {
-      map.setIndoorEnable(args["indoorEnabled"] as Boolean)
-    }
-
-    if (args["buildingsEnabled"] != null) {
-      map.isBuildingsEnabled = args["buildingsEnabled"] as Boolean
-    }
-
-    if (args["baiduHeatMapEnabled"] != null) {
-      map.isBaiduHeatMapEnabled = args["baiduHeatMapEnabled"] as Boolean
-    }
+    setMapStatus(args["mapStatus"] as? HashMap<*, *>)
 
     map.setOnMapClickListener(object : BaiduMap.OnMapClickListener {
       override fun onMapPoiClick(poi: MapPoi) {
@@ -85,12 +50,12 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       override fun onMapStatusChangeStart(status: MapStatus, reason: Int) {}
       override fun onMapStatusChange(status: MapStatus) {}
       override fun onMapStatusChangeFinish(status: MapStatus) {
-        val map = HashMap<String, Any>()
-        map["center"] = status.target.toMap()
-        map["overlook"] = status.overlook
-        map["rotation"] = status.rotate
-        map["zoom"] = status.zoom
-        channel.invokeMethod("onStatusChanged", map)
+        channel.invokeMethod("onStatusChanged", HashMap<String, Any>().apply {
+          this["center"] = status.target.toMap()
+          this["overlook"] = status.overlook
+          this["rotation"] = status.rotate
+          this["zoom"] = status.zoom
+        })
       }
     })
 
@@ -100,26 +65,17 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
     }
   }
 
-  private fun setMapStatus(status: HashMap<*, *>, duration: Int = 0) {
-    val builder = MapStatus.Builder()
-
-    if (status["center"] != null) {
-      builder.target((status["center"] as HashMap<*, *>).toLatLng())
+  private fun setMapStatus(status: HashMap<*, *>?, duration: Int = 0) {
+    if (status == null) {
+      return
     }
 
-    if (status["overlook"] != null) {
-      builder.overlook((status["overlook"] as Double).toFloat())
-    }
-
-    if (status["rotation"] != null) {
-      builder.rotate((status["rotation"] as Double).toFloat())
-    }
-
-    if (status["zoom"] != null) {
-      builder.zoom((status["zoom"] as Double).toFloat())
-    }
-
-    val mapStatus = MapStatusUpdateFactory.newMapStatus(builder.build())
+    val mapStatus = MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().apply {
+      target((status["center"] as? HashMap<*, *>)?.toLatLng())
+      (status["overlook"] as? Double)?.toFloat()?.let { overlook(it) }
+      (status["rotation"] as? Double)?.toFloat()?.let { rotate(it) }
+      (status["zoom"] as? Double)?.toFloat()?.let { zoom(it) }
+    }.build())
 
     if (duration > 0) {
       map.animateMapStatus(mapStatus, duration)
