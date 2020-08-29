@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'events.dart';
 import 'layers.dart';
+import 'controls.dart';
 import 'map_status.dart';
 import 'map_type.dart';
 import 'marker.dart';
@@ -39,18 +40,20 @@ class Example {
 
 class _State extends State {
   final _examples = [
-    Example('mapType', (title) => MapTypeExample(title)),
-    Example('mapStatus', (title) => MapStatusExample(title)),
-    Example('layers: traffic, indoor, buildings...',
+    Example('地图类型', (title) => MapTypeExample(title)),
+    Example('地图状态', (title) => MapStatusExample(title)),
+    Example('图层：交通、室内、3D 建筑',
         (title) => LayersExample(title)),
-    Example('events', (title) => EventsExample(title)),
-    Example('marker', (title) => MarkerExample(title)),
+    Example('控件：比例尺、缩放按钮、指南针',
+        (title) => ControlsExample(title)),
+    Example('地图事件', (title) => EventsExample(title)),
+    Example('动态添加/移除标记', (title) => MarkerExample(title)),
   ];
 
   @override
   void initState() {
     super.initState();
-    BaiduMapSDK.init(iosApiKey: '3rfXjBG7eCzn2B0Eh8bTFjfaFnDGM2CZ');
+    Initializer.init(iosApiKey: '3rfXjBG7eCzn2B0Eh8bTFjfaFnDGM2CZ');
   }
 
   @override

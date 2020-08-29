@@ -1,6 +1,6 @@
 part of baidu_map;
 
-class BaiduMapSDK {
+class Initializer {
   static const _channel = MethodChannel('BaiduMap');
 
   /// 百度地图 SDK 初始化，必须在显示地图前调用

@@ -1,8 +1,8 @@
 import 'package:baidu_map/baidu_map.dart';
 import 'package:flutter/material.dart';
 
-class LayersExample extends StatefulWidget {
-  LayersExample(this.title, {Key key}) : super(key: key);
+class ControlsExample extends StatefulWidget {
+  ControlsExample(this.title, {Key key}) : super(key: key);
 
   final title;
   final mapViewKey = UniqueKey();
@@ -17,14 +17,13 @@ class Item {
   Item(this.name);
 }
 
-final traffic = Item('traffic');
-final indoor = Item('indoor');
-final buildings = Item('buildings');
-final baiduHeatMap = Item('baiduHeatMap');
+final compass = Item('compass');
+final zoomControls = Item('zoomControls');
+final scaleBar = Item('scaleBar');
 
-class _State extends State<LayersExample> {
-  final _state = {buildings.name: true};
-  final _items = [traffic, indoor, buildings, baiduHeatMap];
+class _State extends State<ControlsExample> {
+  final _items = [compass, zoomControls, scaleBar];
+  final _state = {scaleBar.name: true, zoomControls.name: true};
 
   @override
   build(context) {
@@ -53,12 +52,10 @@ class _State extends State<LayersExample> {
           Expanded(
             child: BaiduMap(
               key: widget.mapViewKey,
-              mapStatus: MapStatus(
-                  center: LatLng(39.9169, 116.3793), zoom: 19, overlook: -45),
-              trafficEnabled: _state[traffic.name],
-              indoorEnabled: _state[indoor.name],
-              buildingsEnabled: _state[buildings.name],
-              baiduHeatMapEnabled: _state[baiduHeatMap.name],
+              mapStatus: MapStatus(rotation: 45),
+              compassEnabled: _state[compass.name],
+              zoomControlsEnabled: _state[zoomControls.name],
+              scaleBarEnabled: _state[scaleBar.name],
             ),
           ),
           Row(

@@ -22,12 +22,16 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
 
   init {
     channel.setMethodCallHandler(this)
+    map.setCompassEnable(false)
 
     (args["mapType"] as? Int)?.let { map.mapType = it }
     (args["trafficEnabled"] as? Boolean)?.let { map.isTrafficEnabled = it }
     (args["indoorEnabled"] as? Boolean)?.let { map.setIndoorEnable(it) }
     (args["buildingsEnabled"] as? Boolean)?.let { map.isBuildingsEnabled = it }
     (args["baiduHeatMapEnabled"] as? Boolean)?.let { map.isBaiduHeatMapEnabled = it }
+    (args["compassEnabled"] as? Boolean)?.let { map.setCompassEnable(it) }
+    (args["zoomControlsEnabled"] as? Boolean)?.let { mapView.showZoomControls(it) }
+    (args["scaleBarEnabled"] as? Boolean)?.let { mapView.showScaleControl(it) }
 
     setMapStatus(args["mapStatus"] as? HashMap<*, *>)
 
@@ -116,6 +120,18 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       }
       "setBaiduHeatMapEnabled" -> {
         map.isBaiduHeatMapEnabled = call.arguments as Boolean
+        result.success(null)
+      }
+      "setCompassEnabled" -> {
+        map.setCompassEnable(call.arguments as Boolean)
+        result.success(null)
+      }
+      "setZoomControlsEnabled" -> {
+        mapView.showZoomControls(call.arguments as Boolean)
+        result.success(null)
+      }
+      "setScaleBarEnabled" -> {
+        mapView.showScaleControl(call.arguments as Boolean)
         result.success(null)
       }
       "addMarker" -> {
