@@ -32,7 +32,6 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
     (args["compassEnabled"] as? Boolean)?.let { map.setCompassEnable(it) }
     (args["zoomControlsEnabled"] as? Boolean)?.let { mapView.showZoomControls(it) }
     (args["scaleBarEnabled"] as? Boolean)?.let { mapView.showScaleControl(it) }
-
     setMapStatus(args["mapStatus"] as? HashMap<*, *>)
 
     map.setOnMapClickListener(object : BaiduMap.OnMapClickListener {

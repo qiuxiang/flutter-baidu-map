@@ -41,7 +41,7 @@ class Example {
 class _State extends State {
   final _examples = [
     Example('地图类型', (title) => MapTypeExample(title)),
-    Example('地图状态', (title) => MapStatusExample(title)),
+    Example('地图状态切换，支持动画过度', (title) => MapStatusExample(title)),
     Example('图层：交通、室内、3D 建筑',
         (title) => LayersExample(title)),
     Example('控件：比例尺、缩放按钮、指南针',
@@ -59,7 +59,7 @@ class _State extends State {
   @override
   build(context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Plugin examples')),
+        appBar: AppBar(title: Text('Examples')),
         body: ListView(
           children: _examples
               .map(((example) => ListTile(

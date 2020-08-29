@@ -37,7 +37,7 @@ class _State extends State<MapStatusExample> {
         title: Text(widget.title),
         actions: [
           Row(children: [
-            Text('Animated'),
+            Text('动画'),
             Switch(
               value: _animated,
               onChanged: (value) {

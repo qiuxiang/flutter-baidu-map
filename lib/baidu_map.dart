@@ -169,16 +169,16 @@ class BaiduMapViewController {
       final widget = _state.widget;
       switch (call.method) {
         case 'onTap':
-          widget?.onTap(LatLng.fromMap(call.arguments));
+          widget.onTap(LatLng.fromMap(call.arguments));
           break;
         case 'onTapPoi':
-          widget?.onTapPoi(MapPoi.fromMap(call.arguments));
+          widget.onTapPoi(MapPoi.fromMap(call.arguments));
           break;
         case 'onTapMarker':
-          widget?.onTapMarker(_markers[call.arguments]);
+          widget.onTapMarker(_markers[call.arguments]);
           break;
         case 'onStatusChanged':
-          widget?.onStatusChanged(MapStatus.fromMap(call.arguments));
+          widget.onStatusChanged(MapStatus.fromMap(call.arguments));
           break;
       }
       return;
