@@ -21,8 +21,7 @@ class BaiduMapMarker(map: BaiduMapView, args: HashMap<*, *>) : MethodCallHandler
     val options = MarkerOptions()
     options.position((args["position"] as HashMap<*, *>).toLatLng())
     options.infoWindow(InfoWindow(icon, options.position, 0) {})
-    val icon: BitmapDescriptor = getIcon(args) ?: icon
-    options.icon(icon)
+    options.icon(getIcon(args) ?: icon)
     marker = map.map.addOverlay(options) as Marker
     marker.hideInfoWindow()
     channel = MethodChannel(map.messenger, "BaiduMapMarker_$id")
