@@ -2,7 +2,7 @@ part of baidu_map;
 
 /// 地图标记覆盖物
 class MarkerOptions {
-  MarkerOptions({@required this.position, this.asset});
+  const MarkerOptions({@required this.position, this.asset});
 
   /// 标记坐标
   final LatLng position;

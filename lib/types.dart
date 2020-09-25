@@ -12,12 +12,12 @@ const MAP_TYPE_NONE = 3;
 /// 经纬度坐标
 class LatLng {
   /// 纬度
-  double latitude;
+  final double latitude;
 
   /// 经度
-  double longitude;
+  final double longitude;
 
-  LatLng(this.latitude, this.longitude);
+  const LatLng(this.latitude, this.longitude);
 
   LatLng.fromMap(map)
       : latitude = map['latitude'],
@@ -26,8 +26,8 @@ class LatLng {
   toMap() => {'latitude': latitude, 'longitude': longitude};
 
   @override
-  bool operator ==(_) =>
-      _ is LatLng && _.latitude == latitude && _.longitude == longitude;
+  bool operator ==(it) =>
+      it is LatLng && it.latitude == latitude && it.longitude == longitude;
 
   @override
   get hashCode => latitude.hashCode ^ longitude.hashCode;
@@ -36,18 +36,18 @@ class LatLng {
 /// 地图状态
 class MapStatus {
   /// 坐标
-  LatLng center;
+  final LatLng center;
 
   /// 地图俯仰角度 -45~0
-  double overlook;
+  final double overlook;
 
   /// 地图旋转角度
-  double rotation;
+  final double rotation;
 
   /// 地图缩放级别 4~21，室内图支持到 22
-  double zoom;
+  final double zoom;
 
-  MapStatus({this.center, this.overlook, this.rotation, this.zoom});
+  const MapStatus({this.center, this.overlook, this.rotation, this.zoom});
 
   MapStatus.fromMap(map)
       : center = LatLng.fromMap(map['center']),
@@ -78,15 +78,15 @@ class MapStatus {
 /// 点击地图兴趣点时的描述数据
 class MapPoi {
   /// 兴趣点的坐标
-  LatLng position;
+  final LatLng position;
 
   /// 兴趣点名称
-  String name;
+  final String name;
 
   /// 兴趣点的 UID
-  String id;
+  final String id;
 
-  MapPoi({this.position, this.name, this.id});
+  const MapPoi({this.position, this.name, this.id});
 
   MapPoi.fromMap(map)
       : position = LatLng.fromMap(map['position']),

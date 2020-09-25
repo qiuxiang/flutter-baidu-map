@@ -12,7 +12,7 @@ part 'initializer.dart';
 
 /// 百度地图组件
 class BaiduMap extends StatefulWidget {
-  BaiduMap({
+  const BaiduMap({
     Key key,
     this.onCreated,
     this.mapType,
