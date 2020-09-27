@@ -1,6 +1,7 @@
 package qiuxiang.flutter.baidu_map
 
 import android.app.Activity
+import android.content.Context
 import android.view.View
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
@@ -8,6 +9,9 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
+import io.flutter.view.FlutterMain
+import java.io.File
+
 
 class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
   : PlatformView, MethodChannel.MethodCallHandler {
@@ -32,6 +36,7 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
     (args["compassEnabled"] as? Boolean)?.let { map.setCompassEnable(it) }
     (args["zoomControlsEnabled"] as? Boolean)?.let { mapView.showZoomControls(it) }
     (args["scaleBarEnabled"] as? Boolean)?.let { mapView.showScaleControl(it) }
+    (args["customStyle"] as? String)?.let { setCustomStyle(it) }
     setMapStatus(args["mapStatus"] as? HashMap<*, *>)
 
     map.setOnMapClickListener(object : BaiduMap.OnMapClickListener {
@@ -66,6 +71,15 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       channel.invokeMethod("onTapMarker", marker.id)
       true
     }
+  }
+
+  private fun setCustomStyle(asset: String) {
+    val file = File("${activity.cacheDir.absolutePath}/custom.sty")
+    activity.assets.open(FlutterMain.getLookupKeyForAsset(asset)).use { input ->
+      file.outputStream().use { output -> input.copyTo(output) }
+    }
+    mapView.setMapCustomStylePath(file.absolutePath)
+    mapView.setMapCustomStyleEnable(true)
   }
 
   private fun setMapStatus(status: HashMap<*, *>?, duration: Int = 0) {
@@ -131,6 +145,10 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
       }
       "setScaleBarEnabled" -> {
         mapView.showScaleControl(call.arguments as Boolean)
+        result.success(null)
+      }
+      "setCustomStyle" -> {
+        setCustomStyle(call.arguments as String)
         result.success(null)
       }
       "addMarker" -> {

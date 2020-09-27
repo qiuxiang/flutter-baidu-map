@@ -8,6 +8,7 @@ import 'map_status.dart';
 import 'map_type.dart';
 import 'marker-asset.dart';
 import 'marker.dart';
+import 'custom_style.dart';
 
 void main() {
   runApp(App());
@@ -48,6 +49,7 @@ class _State extends State {
     Example('地图事件', (_) => EventsExample(_)),
     Example('动态添加/移除标记', (_) => MarkerExample(_)),
     Example('自定义 Marker 图标', (_) => MarkerAssetExample(_)),
+    Example('自定义地图样式', (_) => CustomStyleExample(_)),
   ];
 
   @override

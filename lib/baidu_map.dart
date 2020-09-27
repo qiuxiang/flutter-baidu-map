@@ -6,9 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-part 'types.dart';
-part 'marker.dart';
 part 'initializer.dart';
+
+part 'marker.dart';
+
+part 'types.dart';
 
 /// 百度地图组件
 class BaiduMap extends StatefulWidget {
@@ -24,6 +26,7 @@ class BaiduMap extends StatefulWidget {
     this.compassEnabled,
     this.zoomControlsEnabled,
     this.scaleBarEnabled,
+    this.customStyle,
     this.onTap,
     this.onTapPoi,
     this.onTapMarker,
@@ -64,6 +67,9 @@ class BaiduMap extends StatefulWidget {
   /// 是否显示比例尺，默认显示
   final bool scaleBarEnabled;
 
+  /// 自定义样式
+  final String customStyle;
+
   /// 点击地图时调用
   final void Function(LatLng) onTap;
 
@@ -89,6 +95,7 @@ class BaiduMap extends StatefulWidget {
         'compassEnabled': compassEnabled,
         'zoomControlsEnabled': zoomControlsEnabled,
         'scaleBarEnabled': scaleBarEnabled,
+        'customStyle': customStyle,
       };
 }
 
@@ -146,6 +153,9 @@ class _BaiduMapState extends State<BaiduMap> {
     }
     if (_.scaleBarEnabled != widget.scaleBarEnabled) {
       _controller.setScaleBarEnabled(widget.scaleBarEnabled);
+    }
+    if (_.customStyle != widget.customStyle) {
+      _controller.setCustomStyle(widget.customStyle);
     }
   }
 
@@ -228,6 +238,11 @@ class BaiduMapViewController {
   /// 设置是否显示比例尺
   Future<void> setScaleBarEnabled(bool enabled) {
     return _channel.invokeMethod('setScaleBarEnabled', enabled);
+  }
+
+  /// 设置自定义样式
+  Future<void> setCustomStyle(String path) {
+    return _channel.invokeMethod('setCustomStyle', path);
   }
 
   Future<Marker> addMarker(MarkerOptions options) async {
