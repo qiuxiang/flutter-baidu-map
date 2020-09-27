@@ -33,8 +33,9 @@ class BaiduMapMarker(map: BaiduMapView, args: HashMap<*, *>) : MethodCallHandler
   }
 
   private fun getIcon(args: HashMap<*, *>): BitmapDescriptor? {
-    return BitmapDescriptorFactory.fromAsset(
-      (args["asset"] as? String)?.let { FlutterMain.getLookupKeyForAsset(it) })
+    return (args["asset"] as? String)?.let {
+      BitmapDescriptorFactory.fromAsset(FlutterMain.getLookupKeyForAsset(it))
+    }
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
