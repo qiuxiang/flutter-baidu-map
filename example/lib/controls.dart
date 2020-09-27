@@ -52,7 +52,7 @@ class _State extends State<ControlsExample> {
           Expanded(
             child: BaiduMap(
               key: widget.mapViewKey,
-              mapStatus: MapStatus(rotation: 45),
+              mapStatus: MapStatus(rotate: 45),
               compassEnabled: _state[compass.name],
               zoomControlsEnabled: _state[zoomControls.name],
               scaleBarEnabled: _state[scaleBar.name],

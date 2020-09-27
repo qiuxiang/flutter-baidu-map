@@ -57,7 +57,7 @@ class BaiduMapView: NSObject, FlutterPlatformView, BMKMapViewDelegate {
         if let it = toCoordinate(status?["center"]) { mapStatus.targetGeoPt = it }
         if let it = status?["zoom"] as? Float { mapStatus.fLevel = it }
         if let it = status?["overlook"] as? Float { mapStatus.fOverlooking = it }
-        if let it = status?["rotation"] as? Float { mapStatus.fRotation = it }
+        if let it = status?["rotate"] as? Float { mapStatus.fRotation = it }
         if (duration > 0) {
             mapView.setMapStatus(mapStatus, withAnimation: true, withAnimationTime: duration)
         } else {
@@ -124,7 +124,7 @@ class BaiduMapView: NSObject, FlutterPlatformView, BMKMapViewDelegate {
             "center": toJson(mapView.centerCoordinate),
             "zoom": mapView.zoomLevel,
             "overlook": Double(mapView.overlooking),
-            "rotation": Double(mapView.rotation),
+            "rotate": Double(mapView.rotate),
         ])
     }
 }

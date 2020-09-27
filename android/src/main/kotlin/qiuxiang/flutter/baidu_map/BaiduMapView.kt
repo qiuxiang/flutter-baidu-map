@@ -61,7 +61,7 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
         channel.invokeMethod("onStatusChanged", HashMap<String, Any>().apply {
           this["center"] = status.target.toMap()
           this["overlook"] = status.overlook
-          this["rotation"] = status.rotate
+          this["rotate"] = status.rotate
           this["zoom"] = status.zoom
         })
       }
@@ -90,7 +90,7 @@ class BaiduMapView(var messenger: BinaryMessenger, id: Int, args: HashMap<*, *>)
     val mapStatus = MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().apply {
       target((status["center"] as? HashMap<*, *>)?.toLatLng())
       (status["overlook"] as? Double)?.toFloat()?.let { overlook(it) }
-      (status["rotation"] as? Double)?.toFloat()?.let { rotate(it) }
+      (status["rotate"] as? Double)?.toFloat()?.let { rotate(it) }
       (status["zoom"] as? Double)?.toFloat()?.let { zoom(it) }
     }.build())
 

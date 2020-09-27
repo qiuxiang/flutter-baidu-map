@@ -42,23 +42,23 @@ class MapStatus {
   final double overlook;
 
   /// 地图旋转角度
-  final double rotation;
+  final double rotate;
 
   /// 地图缩放级别 4~21，室内图支持到 22
   final double zoom;
 
-  const MapStatus({this.center, this.overlook, this.rotation, this.zoom});
+  const MapStatus({this.center, this.overlook, this.rotate, this.zoom});
 
   MapStatus.fromMap(map)
       : center = LatLng.fromMap(map['center']),
         overlook = map['overlook'],
-        rotation = map['rotation'],
+        rotate = map['rotate'],
         zoom = map['zoom'];
 
   toMap() => {
         'center': center?.toMap(),
         'overlook': overlook,
-        'rotation': rotation,
+        'rotate': rotate,
         'zoom': zoom,
       };
 
@@ -67,12 +67,12 @@ class MapStatus {
       _ is MapStatus &&
       _.center == center &&
       _.overlook == overlook &&
-      _.rotation == rotation &&
+      _.rotate == rotate &&
       _.zoom == zoom;
 
   @override
   get hashCode =>
-      center.hashCode ^ overlook.hashCode ^ rotation.hashCode ^ zoom.hashCode;
+      center.hashCode ^ overlook.hashCode ^ rotate.hashCode ^ zoom.hashCode;
 }
 
 /// 点击地图兴趣点时的描述数据
