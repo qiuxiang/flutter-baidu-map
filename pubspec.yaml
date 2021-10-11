@@ -1,27 +1,26 @@
 name: baidu_map
-description: Flutter 百度地图，目前还处在开发中，仅支持 Android
-version: 0.0.2+1
-author: 7c00 <i@7c00.cc>
+description: Baidu Map for Flutter (Developers Preview).
+version: 0.0.1
 homepage: https://github.com/qiuxiang/flutter-baidu-map
-repository: https://github.com/qiuxiang/flutter-baidu-map
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.10.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  google_maps_flutter_platform_interface: ^2.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
+  pigeon: ^1.0.7
 
 flutter:
   plugin:
     platforms:
       android:
-        package: qiuxiang.flutter.baidu_map
-        pluginClass: BaiduMapPlugin
-      ios:
+        package: qxiang.flutter.baidu_map
         pluginClass: BaiduMapPlugin

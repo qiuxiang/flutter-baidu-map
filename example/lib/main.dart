@@ -1,73 +1,45 @@
 import 'package:baidu_map/baidu_map.dart';
+import 'package:baidu_map_example/pages/layers.dart';
+import 'package:baidu_map_example/pages/move_camera.dart';
 import 'package:flutter/material.dart';
 
-import 'controls.dart';
-import 'events.dart';
-import 'layers.dart';
-import 'map_status.dart';
-import 'map_type.dart';
-import 'marker-asset.dart';
-import 'marker.dart';
-import 'custom_style.dart';
+import 'pages/controls.dart';
+import 'pages/map_types.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
-  build(BuildContext context) {
+  Widget build(BuildContext context) {
+    BaiduMap.init('EVdGGTOQ298HlVkqYNoU6djOGUzZ1dqI');
     return MaterialApp(
-      darkTheme: ThemeData.dark(),
-      home: Home(),
+      home: Scaffold(
+        body: ListView(children: [
+          Item('地图类型切换', (_) => const MapTypesPage()),
+          Item('地图视角移动', (_) => const MoveCameraPage()),
+          Item('图层：路况、室内图、3D 建筑', (_) => const LayersPage()),
+          Item('控件：比例尺、缩放按钮、指南针', (_) => const ControlsPage()),
+        ]),
+      ),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  @override
-  createState() => _State();
-}
-
-class Example {
-  Example(this.title, this.builder);
-
+class Item extends StatelessWidget {
   final String title;
-  final Widget Function(String) builder;
+  final Widget Function(BuildContext) builder;
 
-  open(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => builder(title)));
-  }
-}
-
-class _State extends State {
-  final _examples = [
-    Example('地图类型', (_) => MapTypeExample(_)),
-    Example('地图状态切换，支持动画过度', (_) => MapStatusExample(_)),
-    Example('图层：交通、室内、3D 建筑', (_) => LayersExample(_)),
-    Example('控件：比例尺、缩放按钮、指南针', (_) => ControlsExample(_)),
-    Example('地图事件', (_) => EventsExample(_)),
-    Example('动态添加/移除标记', (_) => MarkerExample(_)),
-    Example('自定义 Marker 图标', (_) => MarkerAssetExample(_)),
-    Example('自定义地图样式', (_) => CustomStyleExample(_)),
-  ];
+  const Item(this.title, this.builder, {Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    super.initState();
-    Initializer.init(iosApiKey: '3rfXjBG7eCzn2B0Eh8bTFjfaFnDGM2CZ');
-  }
-
-  @override
-  build(context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Examples')),
-        body: ListView(
-          children: _examples
-              .map(((example) => ListTile(
-                  title: Text(example.title),
-                  onTap: () => example.open(context))))
-              .toList(),
-        ));
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: builder)),
+    );
   }
 }

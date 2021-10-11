@@ -1,3 +1,3 @@
-## 0.0.2
+## 0.0.1
 
-* 实现 MapView 基本功能（试发布）
+* TODO: Describe initial release.
