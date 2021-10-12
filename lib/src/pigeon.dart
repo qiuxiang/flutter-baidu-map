@@ -3,8 +3,8 @@ import 'package:pigeon/pigeon.dart';
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/src/pigeon.g.dart',
-    javaOut: 'android/src/main/java/qxiang/flutter/baidu_map/Pigeon.java',
-    javaOptions: JavaOptions(package: 'qxiang.flutter.baidu_map'),
+    javaOut: 'android/src/main/java/qiuxiang/flutter/baidu_map/Pigeon.java',
+    javaOptions: JavaOptions(package: 'qiuxiang.flutter.baidu_map'),
   ),
 )
 @HostApi()

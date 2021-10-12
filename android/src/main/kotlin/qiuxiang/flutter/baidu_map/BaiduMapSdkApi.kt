@@ -1,4 +1,4 @@
-package qxiang.flutter.baidu_map
+package qiuxiang.flutter.baidu_map
 
 import android.content.Context
 import com.baidu.mapapi.CoordType

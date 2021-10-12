@@ -22,5 +22,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: qxiang.flutter.baidu_map
+        package: qiuxiang.flutter.baidu_map
         pluginClass: BaiduMapPlugin

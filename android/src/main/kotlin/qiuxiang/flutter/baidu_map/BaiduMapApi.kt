@@ -1,4 +1,4 @@
-package qxiang.flutter.baidu_map
+package qiuxiang.flutter.baidu_map
 
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 

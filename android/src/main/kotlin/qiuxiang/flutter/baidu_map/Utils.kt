@@ -1,4 +1,4 @@
-package qxiang.flutter.baidu_map
+package qiuxiang.flutter.baidu_map
 
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.model.LatLng
