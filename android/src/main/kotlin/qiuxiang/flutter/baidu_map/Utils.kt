@@ -7,12 +7,9 @@ fun List<*>.toLatLng(): LatLng {
   return LatLng(this[0] as Double, this[1] as Double)
 }
 
-//fun LatLng.toMap(): MutableMap<*, *> {
-//  val map = HashMap<String, Any>()
-//  map["latitude"] = this.latitude
-//  map["longitude"] = this.longitude
-//  return map
-//}
+fun LatLng.toJson(): List<Double> {
+  return listOf(this.latitude, this.longitude)
+}
 
 //fun MapPoi.toMap(): MutableMap<*, *> {
 //  val map = HashMap<String, Any>()

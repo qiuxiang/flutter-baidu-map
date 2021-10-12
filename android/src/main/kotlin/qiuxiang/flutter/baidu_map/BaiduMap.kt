@@ -11,6 +11,7 @@ import io.flutter.plugin.platform.PlatformView
 import com.baidu.mapapi.map.BaiduMap as Map
 
 class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
+  private val handler = Pigeon.BaiduMapHandler(messenger)
   val mapView = MapView(context)
   val map: Map = mapView.map
 
@@ -24,7 +25,7 @@ class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
       }
 
       override fun onMapClick(latLng: LatLng) {
-//        channel.invokeMethod("onTap", latLng.toMap())
+        handler.onTap(latLng.toJson())
       }
     })
 

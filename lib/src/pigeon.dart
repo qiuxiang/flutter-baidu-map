@@ -33,4 +33,6 @@ abstract class BaiduMapApi {
 }
 
 @FlutterApi()
-abstract class BaiduMapHandler {}
+abstract class BaiduMapHandler {
+  void onTap(List latLng);
+}

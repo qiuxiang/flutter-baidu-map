@@ -23,6 +23,7 @@ class BaiduMap extends StatefulWidget {
     this.indoorViewEnabled = false,
     this.buildingsEnabled = true,
     this.mapType = MapType.normal,
+    this.onTap,
   }) : super(key: key);
 
   /// 地图类型 [MapType]
@@ -61,6 +62,9 @@ class BaiduMap extends StatefulWidget {
   ///
   /// 可以使用参数 [BaiduMapController] 控制地图
   final void Function(BaiduMapController)? onMapCreated;
+
+  /// 地图单击事件回调函数
+  final void Function(LatLng)? onTap;
 
   @override
   createState() => _BaiduMapState();
@@ -141,9 +145,21 @@ class _BaiduMapState extends State<BaiduMap> {
   }
 
   _onPlatformViewCreated(int id) {
+    BaiduMapHandler.setup(_BaiduMapHandler(widget));
     _controller = BaiduMapController(id, _api);
     widget.onMapCreated?.call(_controller);
     didUpdateWidget(const BaiduMap());
+  }
+}
+
+class _BaiduMapHandler extends BaiduMapHandler {
+  BaiduMap widget;
+
+  _BaiduMapHandler(this.widget);
+
+  @override
+  void onTap(List<Object?> json) {
+    widget.onTap?.call(LatLng.fromJson(json)!);
   }
 }
 
