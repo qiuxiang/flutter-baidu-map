@@ -1,6 +1,7 @@
 package qiuxiang.flutter.baidu_map
 
 import android.content.Context
+import android.os.Handler
 import android.view.View
 import com.baidu.mapapi.map.MapPoi
 import com.baidu.mapapi.map.MapStatus
@@ -11,42 +12,38 @@ import io.flutter.plugin.platform.PlatformView
 import com.baidu.mapapi.map.BaiduMap as Map
 
 class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
-  private val handler = Pigeon.BaiduMapHandler(messenger)
+  private val flutter = Pigeon.BaiduMapHandler(messenger)
   val mapView = MapView(context)
   val map: Map = mapView.map
+  val handler = Handler(context.mainLooper)
 
   init {
     Pigeon.BaiduMapApi.setup(messenger, BaiduMapApi(this))
     map.setCompassEnable(true)
-
     map.setOnMapClickListener(object : Map.OnMapClickListener {
       override fun onMapPoiClick(poi: MapPoi) {
-//        channel.invokeMethod("onTapPoi", poi.toMap())
+        flutter.onTapPoi(poi.toJson()) {}
       }
 
       override fun onMapClick(latLng: LatLng) {
-        handler.onTap(latLng.toJson())
+        flutter.onTap(latLng.toJson()) {}
       }
     })
-
-    map.setOnMapLongClickListener { latLng ->
-//      channel.invokeMethod("onLongPress", latLng.toMap())
-    }
-
+    map.setOnMapLongClickListener { latLng -> flutter.onLongPress(latLng.toJson()) {} }
     map.setOnMapStatusChangeListener(object : Map.OnMapStatusChangeListener {
       override fun onMapStatusChangeStart(status: MapStatus) {}
-      override fun onMapStatusChangeStart(status: MapStatus, reason: Int) {}
-      override fun onMapStatusChange(status: MapStatus) {}
+      override fun onMapStatusChangeStart(status: MapStatus, reason: Int) {
+        flutter.onCameraMoveStarted(status.toJson()) {}
+      }
+
+      override fun onMapStatusChange(status: MapStatus) {
+        handler.post { flutter.onCameraMove(status.toJson()) {} }
+      }
+
       override fun onMapStatusChangeFinish(status: MapStatus) {
-//        channel.invokeMethod("onStatusChanged", HashMap<String, Any>().apply {
-//          this["center"] = status.target.toMap()
-//          this["overlook"] = status.overlook
-//          this["rotate"] = status.rotate
-//          this["zoom"] = status.zoom
-//        })
+        flutter.onCameraIdle(status.toJson()) {}
       }
     })
-
 //    map.setOnMarkerClickListener { marker ->
 //      channel.invokeMethod("onTapMarker", marker.id)
 //      true

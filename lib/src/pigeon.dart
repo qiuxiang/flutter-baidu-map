@@ -35,4 +35,9 @@ abstract class BaiduMapApi {
 @FlutterApi()
 abstract class BaiduMapHandler {
   void onTap(List latLng);
+  void onTapPoi(Map poi);
+  void onLongPress(List latLng);
+  void onCameraMoveStarted(Map cameraPosition);
+  void onCameraMove(Map cameraPosition);
+  void onCameraIdle(Map cameraPosition);
 }

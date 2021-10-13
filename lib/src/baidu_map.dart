@@ -1,6 +1,8 @@
 import 'package:baidu_map/src/types.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart'
     hide MapType;
 
@@ -24,6 +26,11 @@ class BaiduMap extends StatefulWidget {
     this.buildingsEnabled = true,
     this.mapType = MapType.normal,
     this.onTap,
+    this.onTapPoi,
+    this.onLongPress,
+    this.onCameraMoveStarted,
+    this.onCameraMove,
+    this.onCameraIdle,
   }) : super(key: key);
 
   /// 地图类型 [MapType]
@@ -63,8 +70,23 @@ class BaiduMap extends StatefulWidget {
   /// 可以使用参数 [BaiduMapController] 控制地图
   final void Function(BaiduMapController)? onMapCreated;
 
-  /// 地图单击事件回调函数
+  /// 地图空白区域单击事件回调函数
   final void Function(LatLng)? onTap;
+
+  /// 地图兴趣点单击事件回调函数
+  final void Function(MapPoi)? onTapPoi;
+
+  /// 地图长按事件回调函数
+  final void Function(LatLng)? onLongPress;
+
+  /// 地图状态开始改变时调用
+  final void Function(CameraPosition)? onCameraMoveStarted;
+
+  /// 地图状态改变时调用
+  final void Function(CameraPosition)? onCameraMove;
+
+  /// 地图状态结束改变时调用
+  final void Function(CameraPosition)? onCameraIdle;
 
   @override
   createState() => _BaiduMapState();
@@ -96,6 +118,12 @@ class _BaiduMapState extends State<BaiduMap> {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return AndroidView(
+          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            )
+          },
+          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
           viewType: 'BaiduMap',
           onPlatformViewCreated: _onPlatformViewCreated,
         );
@@ -158,8 +186,33 @@ class _BaiduMapHandler extends BaiduMapHandler {
   _BaiduMapHandler(this.widget);
 
   @override
-  void onTap(List<Object?> json) {
-    widget.onTap?.call(LatLng.fromJson(json)!);
+  void onTap(List<Object?> latLng) {
+    widget.onTap?.call(LatLng.fromJson(latLng)!);
+  }
+
+  @override
+  void onTapPoi(Map<Object?, Object?> poi) {
+    widget.onTapPoi?.call(MapPoi.fromJson(poi));
+  }
+
+  @override
+  void onLongPress(List<Object?> latLng) {
+    widget.onLongPress?.call(LatLng.fromJson(latLng)!);
+  }
+
+  @override
+  void onCameraIdle(Map<Object?, Object?> cameraPosition) {
+    widget.onCameraIdle?.call(CameraPosition.fromMap(cameraPosition)!);
+  }
+
+  @override
+  void onCameraMove(Map<Object?, Object?> cameraPosition) {
+    widget.onCameraMove?.call(CameraPosition.fromMap(cameraPosition)!);
+  }
+
+  @override
+  void onCameraMoveStarted(Map<Object?, Object?> cameraPosition) {
+    widget.onCameraMoveStarted?.call(CameraPosition.fromMap(cameraPosition)!);
   }
 }
 

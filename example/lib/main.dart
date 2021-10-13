@@ -1,10 +1,11 @@
 import 'package:baidu_map/baidu_map.dart';
-import 'package:baidu_map_example/pages/layers.dart';
-import 'package:baidu_map_example/pages/move_camera.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/controls.dart';
+import 'pages/events.dart';
+import 'pages/layers.dart';
 import 'pages/map_types.dart';
+import 'pages/move_camera.dart';
 
 void main() {
   runApp(const App());
@@ -23,6 +24,7 @@ class App extends StatelessWidget {
           Item('地图视角移动', (_) => const MoveCameraPage()),
           Item('图层：路况、室内图、3D 建筑', (_) => const LayersPage()),
           Item('控件：比例尺、缩放按钮、指南针', (_) => const ControlsPage()),
+          Item('地图事件回调', (_) => const EventsPage()),
         ]),
       ),
     );
