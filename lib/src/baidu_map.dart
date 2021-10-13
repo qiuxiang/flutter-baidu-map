@@ -118,12 +118,6 @@ class _BaiduMapState extends State<BaiduMap> {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return AndroidView(
-          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-            Factory<OneSequenceGestureRecognizer>(
-              () => EagerGestureRecognizer(),
-            )
-          },
-          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
           viewType: 'BaiduMap',
           onPlatformViewCreated: _onPlatformViewCreated,
         );
