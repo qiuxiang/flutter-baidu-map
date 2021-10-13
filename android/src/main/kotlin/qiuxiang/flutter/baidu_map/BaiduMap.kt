@@ -12,7 +12,7 @@ import io.flutter.plugin.platform.PlatformView
 import com.baidu.mapapi.map.BaiduMap as Map
 
 class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
-  private val flutter = Pigeon.BaiduMapHandler(messenger)
+  private val listener = Pigeon.BaiduMapListener(messenger)
   val mapView = MapView(context)
   val map: Map = mapView.map
   val handler = Handler(context.mainLooper)
@@ -22,26 +22,26 @@ class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
     map.setCompassEnable(true)
     map.setOnMapClickListener(object : Map.OnMapClickListener {
       override fun onMapPoiClick(poi: MapPoi) {
-        flutter.onTapPoi(poi.toJson()) {}
+        listener.onTapPoi(poi.toJson()) {}
       }
 
       override fun onMapClick(latLng: LatLng) {
-        flutter.onTap(latLng.toJson()) {}
+        listener.onTap(latLng.toJson()) {}
       }
     })
-    map.setOnMapLongClickListener { latLng -> flutter.onLongPress(latLng.toJson()) {} }
+    map.setOnMapLongClickListener { latLng -> listener.onLongPress(latLng.toJson()) {} }
     map.setOnMapStatusChangeListener(object : Map.OnMapStatusChangeListener {
       override fun onMapStatusChangeStart(status: MapStatus) {}
       override fun onMapStatusChangeStart(status: MapStatus, reason: Int) {
-        flutter.onCameraMoveStarted(status.toJson()) {}
+        listener.onCameraMoveStarted(status.toJson()) {}
       }
 
       override fun onMapStatusChange(status: MapStatus) {
-        handler.post { flutter.onCameraMove(status.toJson()) {} }
+        handler.post { listener.onCameraMove(status.toJson()) {} }
       }
 
       override fun onMapStatusChangeFinish(status: MapStatus) {
-        flutter.onCameraIdle(status.toJson()) {}
+        listener.onCameraIdle(status.toJson()) {}
       }
     })
 //    map.setOnMarkerClickListener { marker ->

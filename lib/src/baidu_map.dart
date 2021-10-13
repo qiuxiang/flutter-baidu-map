@@ -173,17 +173,17 @@ class _BaiduMapState extends State<BaiduMap> {
   }
 
   _onPlatformViewCreated(int id) {
-    BaiduMapHandler.setup(_BaiduMapHandler(widget));
+    BaiduMapListener.setup(_BaiduMapListener(widget));
     _controller = BaiduMapController(id, _api);
     widget.onMapCreated?.call(_controller);
     didUpdateWidget(const BaiduMap());
   }
 }
 
-class _BaiduMapHandler extends BaiduMapHandler {
+class _BaiduMapListener extends BaiduMapListener {
   BaiduMap widget;
 
-  _BaiduMapHandler(this.widget);
+  _BaiduMapListener(this.widget);
 
   @override
   void onTap(List<Object?> latLng) {

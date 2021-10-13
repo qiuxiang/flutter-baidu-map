@@ -33,7 +33,7 @@ abstract class BaiduMapApi {
 }
 
 @FlutterApi()
-abstract class BaiduMapHandler {
+abstract class BaiduMapListener {
   void onTap(List latLng);
   void onTapPoi(Map poi);
   void onLongPress(List latLng);
