@@ -44,10 +44,6 @@ class BaiduMap(messenger: BinaryMessenger, context: Context) : PlatformView {
         listener.onCameraIdle(status.toJson()) {}
       }
     })
-//    map.setOnMarkerClickListener { marker ->
-//      channel.invokeMethod("onTapMarker", marker.id)
-//      true
-//    }
   }
 
   override fun getView(): View {
